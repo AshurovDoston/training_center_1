@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.log
+.Python
+env/
+venv/
+pip-wheels/
+.venv/
+
+# Django
+*.sqlite3
+db.sqlite3
+/static/ # Collected static files can be generated
+/media/  # User uploaded media (often handled separately in deployment)
+migrations/00*.py # Optional: some teams ignore migration files, but it is generally recommended to include them in version control
+
+# Environment variables & secrets
+.env
+.flaskenv
+
+# OS-specific files
+.DS_Store # macOS
+.idea/ # PyCharm/IntelliJ
+.vscode/ # VS Code (optional, useful for team settings)
+Thumbs.db # Windows
