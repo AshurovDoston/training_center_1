@@ -3,13 +3,13 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 
 class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
     age = forms.IntegerField(required=False, min_value=1)
+    phone = forms.CharField(required=False, max_length=17)
 
 
     class Meta:
         model = CustomUser
-        fields = ("username", "age", "email", "password1", "password2")
+        fields = ("username", "age", "email", "password1", "password2", "phone")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -27,9 +27,6 @@ class CustomUserCreationForm(UserCreationForm):
         if CustomUser.objects.filter(email=email).exists():
             raise forms.ValidationError("Bunday email manzili allaqachon ro'yxatdan o'tgan.")
         return email
-
-
-
 
     # def save(self, commit=True):
     #     user = super().save(commit=False)
