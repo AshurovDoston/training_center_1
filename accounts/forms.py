@@ -4,7 +4,7 @@ from .models import CustomUser
 
 class CustomUserCreationForm(UserCreationForm):
     age = forms.IntegerField(required=False, min_value=1)
-    phone = forms.CharField(required=False, max_length=17)
+    phone = forms.CharField(required=False, max_length=15)
 
 
     class Meta:
