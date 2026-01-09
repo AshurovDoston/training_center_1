@@ -33,12 +33,13 @@ black .
 
 - **django_project/**: Main Django project configuration (settings, root URLs, WSGI/ASGI)
 - **home/**: Homepage app with basic views
-- **accounts/**: User authentication app (uses Django's built-in auth URLs at `/accounts/`)
+- **accounts/**: User authentication app with custom user model (`CustomUser` extending `AbstractUser` with `age` and `phone` fields)
 - **templates/**: Global templates directory with `home.html` and `registration/` for auth templates
 
 ## Configuration
 
 - Environment variables loaded via `django-environ` from `.env` file
 - `DEBUG` and `ALLOWED_HOSTS` configured via environment
-- SQLite database (`db.sqlite3`)
+- PostgreSQL database (requires `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT` in `.env`)
+- Custom user model: `AUTH_USER_MODEL = "accounts.CustomUser"`
 - Templates directory at project root level
