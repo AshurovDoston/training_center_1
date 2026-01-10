@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="heading-1">Welcome my friend</h1>
+{% if user.is_authenticated %}
+    <h2 class="heading-2">Hello, {{ user.username }}!</h2>
+    <h2 class="heading-2">{% if user.age %}Age: {{ user.age }}{% endif %}</h2>
+{% else %}
+    <h2 class="heading-2">Hello, Guest!</h2>
+{% endif %}
 {% endblock %}
