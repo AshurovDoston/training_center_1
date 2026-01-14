@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+from core.managers import AllObjectsManager, SoftDeleteManager
+
 
 class TimestampedModel(models.Model):
     """
@@ -32,10 +34,17 @@ class SoftDeleteModel(TimestampedModel):
     Adds soft delete fields:
     - is_deleted: Boolean flag indicating if record is "deleted"
     - deleted_at: Timestamp of when the record was soft deleted
+
+    Managers:
+    - objects: Default manager that excludes deleted records
+    - all_objects: Manager that includes all records (deleted and non-deleted)
     """
 
     is_deleted = models.BooleanField(default=False, db_index=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
+
+    objects = SoftDeleteManager()
+    all_objects = AllObjectsManager()
 
     class Meta:
         abstract = True
