@@ -4,42 +4,74 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Django 6.0 training center web application using Python 3.13.
+Django 6.0 training center web application (Python 3.13) for an online learning platform.
 
 ## Commands
 
 ```bash
-# Activate virtual environment
-source .venv/bin/activate
-
-# Run development server
-python manage.py runserver
-
-# Run migrations
-python manage.py makemigrations
-python manage.py migrate
-
-# Run tests
-python manage.py test
-
-# Run a single test file
-python manage.py test home.tests
-
-# Format code with black
-black .
+source .venv/bin/activate         # Activate virtual environment
+python manage.py runserver        # Run development server
+python manage.py makemigrations   # Create migrations
+python manage.py migrate          # Apply migrations
+python manage.py test             # Run all tests
+python manage.py test home.tests  # Run single test file
+black .                           # Format code
 ```
 
 ## Architecture
 
-- **django_project/**: Main Django project configuration (settings, root URLs, WSGI/ASGI)
-- **home/**: Homepage app with basic views
-- **accounts/**: User authentication app with custom user model (`CustomUser` extending `AbstractUser` with `age` and `phone` fields)
-- **templates/**: Global templates directory with `home.html` and `registration/` for auth templates
+### App Dependency Graph
 
-## Configuration
+```
+┌──────────┐
+│   core   │  ← Foundation (no dependencies)
+└────┬─────┘
+     │
+┌────▼─────┐
+│ accounts │  ← Auth only (CustomUser)
+└────┬─────┘
+     │
+┌────▼─────┐
+│ profiles │  ← Domain roles (Student, Instructor) [PLANNED]
+└────┬─────┘
+     │
+┌────▼─────┐
+│ courses  │  ← Content hierarchy [PLANNED]
+└────┬─────┘
+     │
+┌────┴────┐
+│enrollments, scheduling, messaging│  [PLANNED]
+└─────────┘
+```
 
-- Environment variables loaded via `django-environ` from `.env` file
-- `DEBUG` and `ALLOWED_HOSTS` configured via environment
-- PostgreSQL database (requires `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT` in `.env`)
+**Rule:** Lower layers NEVER import from higher layers.
+
+### Core App (`core/`)
+
+Foundation layer providing abstract base models for all domain models:
+
+- **TimestampedModel**: Abstract base with `created_at` (indexed), `updated_at`
+- **SoftDeleteModel**: Extends TimestampedModel with soft delete (`is_deleted`, `deleted_at`)
+  - `objects` manager excludes deleted records by default
+  - `all_objects` manager includes all records
+  - `.delete()` soft deletes, `.hard_delete()` permanently removes
+  - Bulk operations via QuerySet: `.soft_delete()`, `.hard_delete()`, `.restore()`
+
+### Accounts App (`accounts/`)
+
+Authentication only. `CustomUser` extends `AbstractUser` with `age` and `phone` fields.
+
+**Key principle:** Auth model stays minimal. Domain roles (Student, Instructor) will be separate models with OneToOne relationships to User.
+
+### Configuration
+
+- Environment variables via `django-environ` from `.env`
+- PostgreSQL database (requires `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`)
 - Custom user model: `AUTH_USER_MODEL = "accounts.CustomUser"`
-- Templates directory at project root level
+- Templates at project root: `templates/`
+
+## Domain Modeling Patterns
+
+1. **Profile Pattern**: User ← OneToOne → Student/Instructor (same person can have multiple roles)
+2. **Soft Delete**: All domain models inherit from `SoftDeleteModel`
+3. **Strict Dependencies**: Apps only import from lower layers in the dependency graph

@@ -1,1 +1,32 @@
-<h1>Login</h1>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login - Gamzan{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 class="auth-title">Login</h1>
+            <p class="auth-subtitle">Welcome back! Please sign in to continue.</p>
+        </div>
+        <form method="post" class="form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+        <div class="auth-footer">
+            <p class="auth-footer-text">
+                Don't have an account? <a href="{% url 'signup' %}" class="auth-footer-link">Sign up</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
