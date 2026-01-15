@@ -48,8 +48,9 @@ black .                           # Format code
 
 ### Core App (`core/`)
 
-Foundation layer providing abstract base models for all domain models:
+Foundation layer providing abstract base models and mixins for all domain models.
 
+**Models (`core/models.py`):**
 - **TimestampedModel**: Abstract base with `created_at` (indexed), `updated_at`
 - **SoftDeleteModel**: Extends TimestampedModel with soft delete (`is_deleted`, `deleted_at`)
   - `objects` manager excludes deleted records by default
@@ -57,11 +58,24 @@ Foundation layer providing abstract base models for all domain models:
   - `.delete()` soft deletes, `.hard_delete()` permanently removes
   - Bulk operations via QuerySet: `.soft_delete()`, `.hard_delete()`, `.restore()`
 
+**Mixins (`core/mixins.py`):**
+- **UUIDMixin**: Adds `uuid` field for external-safe identification (prevents URL enumeration attacks)
+- **SlugMixin**: Auto-generates unique slugs from `slug_source_field` (default: "title")
+
+**Managers (`core/managers.py`):**
+- **SoftDeleteQuerySet**: Chainable methods `active()`, `deleted()`, `soft_delete()`, `hard_delete()`, `restore()`
+- **SoftDeleteManager**: Default manager filtering `is_deleted=False`
+- **AllObjectsManager**: Unfiltered manager for admin/reporting
+
 ### Accounts App (`accounts/`)
 
 Authentication only. `CustomUser` extends `AbstractUser` with `age` and `phone` fields.
 
 **Key principle:** Auth model stays minimal. Domain roles (Student, Instructor) will be separate models with OneToOne relationships to User.
+
+### Playground App (`playground/`)
+
+Experimental app for testing mixins and base models. Contains `SlugTestModel` for validation.
 
 ### Configuration
 
@@ -74,4 +88,10 @@ Authentication only. `CustomUser` extends `AbstractUser` with `age` and `phone` 
 
 1. **Profile Pattern**: User ← OneToOne → Student/Instructor (same person can have multiple roles)
 2. **Soft Delete**: All domain models inherit from `SoftDeleteModel`
-3. **Strict Dependencies**: Apps only import from lower layers in the dependency graph
+3. **UUID for External IDs**: Use `UUIDMixin` for models exposed in URLs/APIs
+4. **Auto Slugs**: Use `SlugMixin` for SEO-friendly URLs
+5. **Strict Dependencies**: Apps only import from lower layers in the dependency graph
+
+## Development Roadmap
+
+See `docs/next-plans.md` for the prioritized checklist. Current phase: Phase 1 (Core + Profiles).
