@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "core.apps.CoreConfig",
     "home.apps.HomeConfig",
     "accounts.apps.AccountsConfig",
+    "playground.apps.PlaygroundConfig",
 ]
 
 MIDDLEWARE = [
