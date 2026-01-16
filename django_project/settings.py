@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "playground.apps.PlaygroundConfig",
     "profiles.apps.ProfilesConfig",
+    "courses.apps.CoursesConfig",
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,4 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
