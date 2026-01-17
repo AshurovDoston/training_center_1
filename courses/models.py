@@ -65,7 +65,6 @@ class Module(SoftDeleteModel):
         ordering = ["order"]
 
     ### If you want to enforce unique ordering of modules within a course, uncomment below:
-    class Meta:
         constraints = [
             models.UniqueConstraint(fields=["course", "order"], name="unique_module_order_per_course"),
         ]
@@ -102,7 +101,6 @@ class Lesson(SoftDeleteModel):
         ordering = ["order"]
 
     ### If you want to enforce unique ordering of lessons within a module, uncomment below:
-    class Meta:
         constraints = [
             models.UniqueConstraint(fields=["module", "order"], name="unique_lesson_order_per_module"),
         ]

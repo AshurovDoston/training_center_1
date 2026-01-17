@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "playground.apps.PlaygroundConfig",
     "profiles.apps.ProfilesConfig",
     "courses.apps.CoursesConfig",
+    "enrollments.apps.EnrollmentsConfig",
 ]
 
 MIDDLEWARE = [
