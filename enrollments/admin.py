@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models import Count
 from .models import Enrollment, LessonProgress
 # Register your models here.
 
@@ -12,13 +13,24 @@ class LessonProgressInline(admin.TabularInline):
 
 @admin.register(Enrollment)
 class EnrollmentAdmin(admin.ModelAdmin):
-    list_display = ("student", "course", "enrolled_at", "created_at")
+    list_display = ("course", "student_count", "student", "enrolled_at")
     search_fields = ("student__user__username", "student__user__email", "course__title")
     list_filter = ("is_deleted", "created_at", "updated_at")
-    ordering = ("-enrolled_at",)
+    ordering = ("course",)
     list_select_related = ("student", "student__user", "course",)
     readonly_fields = ("enrolled_at",)
     inlines = [LessonProgressInline]
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset = queryset.annotate(student_count=Count("course__enrollments"))
+        return queryset
+
+    @admin.display(description="Enrolled")
+    def student_count(self, obj):
+        return obj.student_count
+
+
 
 @admin.register(LessonProgress)
 class LessonProgressAdmin(admin.ModelAdmin):
