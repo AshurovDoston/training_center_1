@@ -1,7 +1,13 @@
 from django.db import models
 from core.models import SoftDeleteModel
 from core.mixins import SlugMixin
-from profiles.models import Instructor, Student
+from profiles.models import Instructor
+from .managers import (
+    CourseManager,
+    CourseAllObjectsManager,
+    ModuleManager,
+    ModuleAllObjectsManager,
+)
 
 
 class Course(SlugMixin, SoftDeleteModel):
@@ -30,6 +36,9 @@ class Course(SlugMixin, SoftDeleteModel):
     description = models.TextField(blank=True)
     instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE, related_name="courses")
 
+    objects = CourseManager()
+    all_objects = CourseAllObjectsManager()
+
     class Meta:
         verbose_name = "Course"
         verbose_name_plural = "Courses"
@@ -55,9 +64,12 @@ class Module(SoftDeleteModel):
         - No SEO benefit for nested content
     """
 
-    course = models.ForeignKey(Course, on_delete=models.CASCADE,related_name="modules")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="modules")
     title = models.CharField(max_length=200)
     order = models.PositiveIntegerField(default=0)
+
+    objects = ModuleManager()
+    all_objects = ModuleAllObjectsManager()
 
     class Meta:
         verbose_name = "Module"
@@ -65,11 +77,9 @@ class Module(SoftDeleteModel):
         ordering = ["order"]
 
     ### If you want to enforce unique ordering of modules within a course, uncomment below:
-    class Meta:
         constraints = [
             models.UniqueConstraint(fields=["course", "order"], name="unique_module_order_per_course"),
         ]
-
 
     def __str__(self):
         return f"{self.course.title} - {self.title}"
@@ -102,7 +112,6 @@ class Lesson(SoftDeleteModel):
         ordering = ["order"]
 
     ### If you want to enforce unique ordering of lessons within a module, uncomment below:
-    class Meta:
         constraints = [
             models.UniqueConstraint(fields=["module", "order"], name="unique_lesson_order_per_module"),
         ]

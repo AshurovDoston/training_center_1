@@ -14,3 +14,4 @@ class CustomUserAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ("age", "phone")
     ordering = ("username",)
     search_fields = UserAdmin.search_fields + ("phone",)
+    list_editable = ("age", "phone")

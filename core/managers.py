@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Count
 from django.utils import timezone
 
 
@@ -62,6 +63,25 @@ class SoftDeleteQuerySet(models.QuerySet):
         perform soft delete, not hard delete.
         """
         return self.soft_delete()
+
+    def with_counts(self, *relations):
+        """
+        Annotate queryset with counts for specified relations.
+
+        Handles nested relations by replacing '__' with '_' in the field name.
+
+        Usage:
+            Course.objects.with_counts('modules', 'enrollments')
+            # Adds: modules_count, enrollments_count
+
+            Course.objects.with_counts('modules__lessons')
+            # Adds: modules_lessons_count
+        """
+        annotations = {}
+        for relation in relations:
+            field_name = f"{relation.replace('__', '_')}_count"
+            annotations[field_name] = Count(relation, distinct=True)
+        return self.annotate(**annotations)
 
 
 class SoftDeleteManager(models.Manager):
