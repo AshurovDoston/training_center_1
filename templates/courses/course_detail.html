@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ course.title }} - Training Center{% endblock %}
+
+{% block content %}
+<article class="course-detail">
+    <header class="course-header">
+        <h1 class="course-title">{{ course.title }}</h1>
+        <div class="course-instructor">
+            <span class="instructor-label">Instructor:</span>
+            <span class="instructor-name">{{ course.instructor }}</span>
+        </div>
+    </header>
+
+    <section class="course-description">
+        <h2>About this Course</h2>
+        <p>{{ course.description }}</p>
+    </section>
+
+    <section class="course-instructor-bio">
+        <h2>About the Instructor</h2>
+        <p>{{ course.instructor.bio }}</p>
+    </section>
+
+    <section class="course-enrollment">
+        <h2>Enroll in this Course</h2>
+        {% if user.is_authenticated %}
+            {% if is_enrolled %}
+            <p class="enrollment-status">You are already enrolled in this course.</p>
+            <a href="#" class="btn-continue">Continue Learning</a>
+            {% else %}
+            {# TODO: Update action to {% url 'enroll' course.slug %} when enroll URL is created #}
+            <form method="post" action="#" class="enrollment-form">
+                {% csrf_token %}
+                <button type="submit" class="btn-enroll">Enroll Now</button>
+            </form>
+            {% endif %}
+        {% else %}
+        <p class="enrollment-prompt">Please <a href="{% url 'login' %}">log in</a> to enroll.</p>
+        {% endif %}
+    </section>
+
+    <section class="course-curriculum">
+        <h2>Course Curriculum</h2>
+        {% if course.modules.all %}
+        <ul class="module-list">
+            {% for module in course.modules.all %}
+            <li class="module-item">
+                <h3 class="module-title">{{ module.title }}</h3>
+                {% if module.lessons.all %}
+                <ul class="lesson-list">
+                    {% for lesson in module.lessons.all %}
+                    <li class="lesson-item">
+                        <a href="{% url 'lesson_detail' course.slug lesson.pk %}">{{ lesson.title }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="no-lessons">No lessons in this module yet.</p>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="no-modules">Course curriculum coming soon.</p>
+        {% endif %}
+    </section>
+
+    <footer class="course-meta">
+        <p class="course-created">Updated: {{ course.updated_at|date:"F j, Y" }}</p>
+    </footer>
+</article>
+{% endblock %}

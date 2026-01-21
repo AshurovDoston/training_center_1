@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.db.models import Count
 from .models import Course, Module, Lesson
 
 
@@ -38,23 +37,19 @@ class CourseAdmin(admin.ModelAdmin):
     inlines = [ModuleInline]
 
     def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        queryset = queryset.annotate(
-            _enrollments_count=Count("enrollments", distinct=True)
-        )
-        return queryset
+        return super().get_queryset(request).with_full_counts()
 
     @admin.display(description="Modules")
     def modules_count(self, obj):
-        return obj.modules.count()
+        return obj.modules_count
 
     @admin.display(description="Lessons")
     def lessons_count(self, obj):
-        return Lesson.objects.filter(module__course=obj).count()
+        return obj.lessons_count
 
     @admin.display(description="Enrollments")
     def enrollments_count(self, obj):
-        return obj._enrollments_count
+        return obj.enrollments_count
 
 
 class LessonInline(admin.TabularInline):
@@ -78,9 +73,12 @@ class ModuleAdmin(admin.ModelAdmin):
     )
     inlines = [LessonInline]
 
+    def get_queryset(self, request):
+        return super().get_queryset(request).with_lessons_count()
+
     @admin.display(description="Lessons")
     def lessons_count(self, obj):
-        return obj.lessons.count()
+        return obj.lessons_count
 
 
 @admin.register(Lesson)

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Courses - Training Center{% endblock %}
+
+{% block content %}
+<div>
+    <div>
+        <h1>Available Courses</h1>
+    </div>
+
+    {% if courses %}
+    <div>
+        {% for course in courses %}
+        <div>
+            <div>
+                <div>
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.description|truncatewords:20 }}</p>
+                    <p>
+                        <small>
+                            <strong>Duration:</strong> {{ course.duration }} hours
+                        </small>
+                    </p>
+                    <p>
+                        <strong>Instructor:</strong> {{ course.instructor }}
+                    </p>
+                    <p>
+                        <strong>Modules:</strong> {{ course.modules_count }} |
+                        <strong>Lessons:</strong> {{ course.lessons_count }} |
+                        <strong>Enrollments:</strong> {{ course.enrollments_count }}
+                    </p>
+                    <p>
+                        <strong>Price:</strong> ${{ course.price }}
+                    </p>
+                </div>
+                <div>
+                    <a href="{% url 'course_detail' course.slug %}">View Details</a>
+                    <a href="#">Edit Course</a>
+                </div>
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div>
+        <p>No courses available at the moment. Check back later!</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
