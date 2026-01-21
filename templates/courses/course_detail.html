@@ -4,6 +4,9 @@
 
 {% block content %}
 <article class="course-detail">
+    {# Back link for easy navigation to course list #}
+    <a href="{% url 'course_list' %}" class="back-link">All Courses</a>
+
     <header class="course-header">
         <h1 class="course-title">{{ course.title }}</h1>
         <div class="course-instructor">
@@ -27,12 +30,12 @@
         {% if user.is_authenticated %}
             {% if is_enrolled %}
             <p class="enrollment-status">You are already enrolled in this course.</p>
-            <a href="#" class="btn-continue">Continue Learning</a>
+            <a href="#" class="btn btn-primary">Continue Learning</a>
             {% else %}
             {# TODO: Update action to {% url 'enroll' course.slug %} when enroll URL is created #}
             <form method="post" action="#" class="enrollment-form">
                 {% csrf_token %}
-                <button type="submit" class="btn-enroll">Enroll Now</button>
+                <button type="submit" class="btn btn-primary">Enroll Now</button>
             </form>
             {% endif %}
         {% else %}

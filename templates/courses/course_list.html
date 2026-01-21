@@ -3,49 +3,44 @@
 {% block title %}Courses - Training Center{% endblock %}
 
 {% block content %}
-<div>
-    <div>
-        <h1>Available Courses</h1>
-    </div>
+<header class="page-header">
+    <h1 class="page-title">Available Courses</h1>
+    <p class="page-subtitle">Browse our course catalog and start learning today.</p>
+</header>
 
-    {% if courses %}
-    <div>
-        {% for course in courses %}
-        <div>
-            <div>
-                <div>
-                    <h3>{{ course.title }}</h3>
-                    <p>{{ course.description|truncatewords:20 }}</p>
-                    <p>
-                        <small>
-                            <strong>Duration:</strong> {{ course.duration }} hours
-                        </small>
-                    </p>
-                    <p>
-                        <strong>Instructor:</strong> {{ course.instructor }}
-                    </p>
-                    <p>
-                        <strong>Modules:</strong> {{ course.modules_count }} |
-                        <strong>Lessons:</strong> {{ course.lessons_count }} |
-                        <strong>Enrollments:</strong> {{ course.enrollments_count }}
-                    </p>
-                    <p>
-                        <strong>Price:</strong> ${{ course.price }}
-                    </p>
-                </div>
-                <div>
-                    <a href="{% url 'course_detail' course.slug %}">View Details</a>
-                    <a href="#">Edit Course</a>
-                </div>
+{% if courses %}
+<div class="course-grid">
+    {% for course in courses %}
+    <article class="course-card">
+        <div class="course-card-body">
+            <h2 class="course-card-title">
+                <a href="{% url 'course_detail' course.slug %}">{{ course.title }}</a>
+            </h2>
+
+            <p class="course-card-description">
+                {{ course.description|truncatewords:20|default:"No description available." }}
+            </p>
+
+            <p class="course-card-instructor">
+                <strong>Instructor:</strong> {{ course.instructor }}
+            </p>
+
+            <div class="course-stats">
+                <span class="stat-item"><strong>{{ course.modules_count }}</strong> Modules</span>
+                <span class="stat-item"><strong>{{ course.lessons_count }}</strong> Lessons</span>
+                <span class="stat-item"><strong>{{ course.enrollments_count }}</strong> Enrolled</span>
             </div>
         </div>
-        <hr>
-        {% endfor %}
-    </div>
-    {% else %}
-    <div>
-        <p>No courses available at the moment. Check back later!</p>
-    </div>
-    {% endif %}
+
+        <div class="course-card-footer">
+            <a href="{% url 'course_detail' course.slug %}" class="btn btn-primary">View Course</a>
+        </div>
+    </article>
+    {% endfor %}
 </div>
+{% else %}
+<div class="empty-state">
+    <p>No courses available at the moment. Check back later!</p>
+</div>
+{% endif %}
 {% endblock %}
