@@ -1,0 +1,643 @@
+/* ==========================================================================
+   Courses CSS - Course List, Detail, and Lesson Styles
+   ========================================================================== */
+
+/* ==========================================================================
+   Hero Section - Centered intro section for landing pages
+   ========================================================================== */
+
+/*
+ * .hero centers content and adds generous vertical padding.
+ * Used on home page to create visual focus on the welcome message.
+ * max-width constrains text for better readability on wide screens.
+ */
+.hero {
+    text-align: center;
+    padding: var(--spacing-2xl) 0;
+    max-width: 600px;
+    margin: 0 auto var(--spacing-2xl) auto;
+}
+
+.hero .hero-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 var(--spacing-md) 0;
+}
+
+.hero .hero-subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    margin: 0 0 var(--spacing-xl) 0;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   About Section - Brief explanation block
+   ========================================================================== */
+
+/*
+ * .about-section provides a contained block for explanatory text.
+ * Centered with max-width for comfortable reading.
+ */
+.about-section {
+    max-width: 600px;
+    margin: 0 auto var(--spacing-2xl) auto;
+    text-align: center;
+}
+
+.about-section .about-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 var(--spacing-md) 0;
+}
+
+.about-section .about-text {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* ==========================================================================
+   CTA Section - Final call to action
+   ========================================================================== */
+
+.cta-section {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.cta-section p {
+    margin: 0;
+    color: var(--color-text-muted);
+}
+
+.cta-section .link {
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   Page Header - Reusable section header for any list page
+   ========================================================================== */
+
+/*
+ * .page-header provides consistent styling for page titles.
+ * Use this at the top of any list or landing page.
+ * The bottom margin creates visual separation from content below.
+ */
+.page-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.page-header .page-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.page-header .page-subtitle {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+/* ==========================================================================
+   Course Grid - Responsive layout for course cards
+   ========================================================================== */
+
+/*
+ * CSS Grid creates a responsive layout without complex media queries.
+ * repeat(auto-fill, minmax(320px, 1fr)) means:
+ * - Fill as many columns as fit
+ * - Each column is minimum 320px, maximum equal share of space
+ * - Cards automatically wrap to new rows on smaller screens
+ */
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* ==========================================================================
+   Course Card - Card component for displaying course summaries
+   ========================================================================== */
+
+/*
+ * .course-card follows the card pattern from auth.css.
+ * White background + shadow creates visual hierarchy.
+ * Flexbox with column direction allows footer to stick to bottom.
+ */
+.course-card {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+.course-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+/*
+ * .course-card-body contains the main content.
+ * flex: 1 makes it grow to fill available space,
+ * pushing the footer to the bottom regardless of content height.
+ */
+.course-card-body {
+    padding: var(--spacing-lg);
+    flex: 1;
+}
+
+.course-card-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+/*
+ * Linking the title makes the primary action obvious.
+ * Inheriting color keeps it readable; underline on hover signals clickability.
+ */
+.course-card-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.course-card-title a:hover {
+    color: var(--color-primary);
+}
+
+.course-card-description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin: 0 0 var(--spacing-md) 0;
+    line-height: 1.6;
+}
+
+.course-card-instructor {
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+    margin: 0 0 var(--spacing-md) 0;
+}
+
+.course-card-instructor strong {
+    font-weight: 500;
+}
+
+/*
+ * .course-card-footer is visually separated with a border.
+ * It contains secondary actions like "View Details".
+ */
+.course-card-footer {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+}
+
+/* ==========================================================================
+   Course Stats - Inline metadata badges
+   ========================================================================== */
+
+/*
+ * .course-stats displays counts (modules, lessons, enrollments) in a row.
+ * Using flexbox with wrap allows badges to flow onto new lines if needed.
+ */
+.course-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+/*
+ * .stat-item is a small badge showing a label and value.
+ * Muted colors keep stats secondary to the main content.
+ * This pattern can be reused for tags, categories, etc.
+ */
+.stat-item {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    background-color: var(--color-bg);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--color-border);
+}
+
+.stat-item strong {
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+/* ==========================================================================
+   Empty State - Message when no content exists
+   ========================================================================== */
+
+/*
+ * .empty-state provides a friendly message when a list is empty.
+ * Centered text and muted styling make it non-intrusive.
+ * Padding creates visual breathing room.
+ */
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-2xl) var(--spacing-lg);
+    color: var(--color-text-muted);
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: var(--font-size-base);
+}
+
+/* ==========================================================================
+   Back Link - Return navigation for detail pages
+   ========================================================================== */
+
+/*
+ * .back-link provides a way to return to the parent page.
+ * Positioned before main content, it aids navigation flow.
+ */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    margin-bottom: var(--spacing-lg);
+}
+
+.back-link:hover {
+    color: var(--color-primary);
+}
+
+/* Arrow character before the link text */
+.back-link::before {
+    content: "\2190";  /* Left arrow */
+}
+
+/* ==========================================================================
+   Section - Content sections with consistent spacing
+   ========================================================================== */
+
+/*
+ * .section creates consistent vertical rhythm between content blocks.
+ * Used in course detail for description, instructor bio, curriculum, etc.
+ */
+.section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.section-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 var(--spacing-md) 0;
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.section-content {
+    color: var(--color-text);
+    line-height: 1.7;
+}
+
+.section-content p {
+    margin: 0 0 var(--spacing-md) 0;
+}
+
+.section-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Course Detail - Specific styles for course detail page
+   ========================================================================== */
+
+.course-detail {
+    max-width: 800px;
+}
+
+.course-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.course-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.course-instructor {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+}
+
+.instructor-name {
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+/* Enrollment section styling */
+.course-enrollment {
+    background-color: var(--color-bg);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--color-border);
+    margin-bottom: var(--spacing-xl);
+}
+
+.enrollment-status {
+    color: var(--color-text-muted);
+    margin: 0 0 var(--spacing-md) 0;
+}
+
+.enrollment-prompt {
+    margin: 0;
+}
+
+.enrollment-prompt a {
+    color: var(--color-primary);
+}
+
+/* ==========================================================================
+   Module List - Course curriculum structure
+   ========================================================================== */
+
+/*
+ * Module list removes default list styling.
+ * Each module is a collapsible-style section (visually, not functionally).
+ */
+.module-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.module-item {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-md);
+    overflow: hidden;
+}
+
+.module-item:last-child {
+    margin-bottom: 0;
+}
+
+.module-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+/*
+ * Lesson list within a module.
+ * Indented slightly to show hierarchy.
+ */
+.lesson-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lesson-item {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.lesson-item:last-child {
+    border-bottom: none;
+}
+
+.lesson-item a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+}
+
+.lesson-item a:hover {
+    text-decoration: underline;
+}
+
+.no-lessons,
+.no-modules {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    font-style: italic;
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin: 0;
+}
+
+/* Course meta footer */
+.course-meta {
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--spacing-xl);
+}
+
+.course-created {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+/* ==========================================================================
+   Breadcrumb - Navigation path for nested pages
+   ========================================================================== */
+
+/*
+ * Breadcrumbs show the user's location in the site hierarchy.
+ * Horizontal list with separators between items.
+ */
+.breadcrumb {
+    margin-bottom: var(--spacing-lg);
+}
+
+.breadcrumb-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+}
+
+/* Separator between breadcrumb items */
+.breadcrumb-item:not(:last-child)::after {
+    content: "/";
+    margin-left: var(--spacing-xs);
+    color: var(--color-text-muted);
+}
+
+.breadcrumb-item a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb-item span {
+    color: var(--color-text-muted);
+}
+
+.breadcrumb-current span {
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   Lesson Detail - Lesson page specific styles
+   ========================================================================== */
+
+.lesson-detail {
+    max-width: 800px;
+}
+
+.lesson-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.lesson-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0;
+}
+
+/*
+ * .lesson-content is where the actual lesson text appears.
+ * Generous line-height improves readability for long-form content.
+ */
+.lesson-content {
+    line-height: 1.8;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-xl);
+}
+
+.lesson-content p {
+    margin: 0 0 var(--spacing-md) 0;
+}
+
+/* ==========================================================================
+   Lesson Navigation - Previous/Next lesson links
+   ========================================================================== */
+
+/*
+ * .lesson-navigation uses flexbox to position prev/next links.
+ * justify-content: space-between pushes them to opposite edges.
+ * When only one exists, it stays on its natural side.
+ */
+.lesson-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: var(--spacing-md);
+    padding-top: var(--spacing-xl);
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--spacing-xl);
+}
+
+.nav-previous,
+.nav-next {
+    flex: 1;
+    max-width: 45%;
+}
+
+/* Align next link to the right */
+.nav-next {
+    text-align: right;
+    margin-left: auto;
+}
+
+/*
+ * Navigation links styled as subtle cards.
+ * Display as block allows the entire card to be clickable.
+ */
+.nav-link {
+    display: block;
+    padding: var(--spacing-md);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.nav-link:hover {
+    border-color: var(--color-primary);
+}
+
+.nav-direction {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-xs);
+}
+
+.nav-title {
+    display: block;
+    font-size: var(--font-size-base);
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+/* Add arrows to indicate direction */
+.nav-link-prev .nav-direction::before {
+    content: "\2190 ";  /* Left arrow */
+}
+
+.nav-link-next .nav-direction::after {
+    content: " \2192";  /* Right arrow */
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+
+@media (max-width: 640px) {
+    /* Stack lesson navigation on mobile */
+    .lesson-navigation {
+        flex-direction: column;
+    }
+
+    .nav-previous,
+    .nav-next {
+        max-width: 100%;
+        text-align: left;
+    }
+
+    .nav-next {
+        margin-left: 0;
+    }
+
+    /* Reduce course card padding on mobile */
+    .course-card-body {
+        padding: var(--spacing-md);
+    }
+
+    .course-card-footer {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+}
