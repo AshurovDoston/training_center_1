@@ -1,6 +1,8 @@
+from django.db.models import Prefetch
 from django.shortcuts import render
 from django.views.generic import DetailView
-from .models import Course, Lesson
+from .models import Course, Module, Lesson
+from enrollments.models import Enrollment
 
 
 def course_list(request):
@@ -12,13 +14,32 @@ def course_list(request):
 
 
 def course_detail(request, slug):
+    modules_qs = Module.objects.with_lessons_count().prefetch_related("lessons")
+
     course = (
         Course.objects.select_related("instructor__user")
-        .prefetch_related("modules__lessons")
+        .prefetch_related(Prefetch("modules", queryset=modules_qs))
         .get(slug=slug)
     )
+
+    modules = list(course.modules.all())
+    modules_count = len(modules)
+    lessons_count = sum(m.lessons_count for m in modules)
+
+    is_enrolled = False
+    if request.user.is_authenticated:
+        try:
+            is_enrolled = Enrollment.objects.filter(
+                student=request.user.student_profile, course=course
+            ).exists()
+        except request.user._meta.model.student_profile.RelatedObjectDoesNotExist:
+            pass
+
     context = {
         "course": course,
+        "modules_count": modules_count,
+        "lessons_count": lessons_count,
+        "is_enrolled": is_enrolled,
     }
     return render(request, "courses/course_detail.html", context)
 

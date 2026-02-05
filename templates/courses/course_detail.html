@@ -7,11 +7,14 @@
 <article class="course-detail">
     <a href="{% url 'course_list' %}" class="back-link">All Courses</a>
 
-    <header class="course-header">
-        <h1 class="course-title">{{ course.title }}</h1>
-        <div class="course-instructor">
-            <span class="instructor-label">Instructor:</span>
-            <span class="instructor-name">{{ course.instructor }}</span>
+    <header class="hero--detail">
+        <h1 class="hero-detail-title">{{ course.title }}</h1>
+        <p class="hero-detail-instructor">
+            Taught by <strong>{{ course.instructor }}</strong>
+        </p>
+        <div class="course-detail-stats">
+            <span class="stat-item stat-item--hero"><strong>{{ modules_count }}</strong> Module{{ modules_count|pluralize }}</span>
+            <span class="stat-item stat-item--hero"><strong>{{ lessons_count }}</strong> Lesson{{ lessons_count|pluralize }}</span>
         </div>
     </header>
 
@@ -20,30 +23,6 @@
         <div class="section-content">
             <p>{{ course.description }}</p>
         </div>
-    </section>
-
-    <section class="section">
-        <h2 class="section-title">About the Instructor</h2>
-        <div class="section-content">
-            <p>{{ course.instructor.bio }}</p>
-        </div>
-    </section>
-
-    <section class="course-enrollment">
-        <h2 class="section-title">Enroll in this Course</h2>
-        {% if user.is_authenticated %}
-            {% if is_enrolled %}
-            <p class="enrollment-status">You are already enrolled in this course.</p>
-            <a href="#" class="btn btn-primary">Continue Learning</a>
-            {% else %}
-            <form method="post" action="#" class="enrollment-form">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary">Enroll Now</button>
-            </form>
-            {% endif %}
-        {% else %}
-        <p class="enrollment-prompt">Please <a href="{% url 'login' %}">log in</a> to enroll.</p>
-        {% endif %}
     </section>
 
     <section class="section">
@@ -59,6 +38,7 @@
                     aria-expanded="false"
                 >
                     <span class="accordion-title">{{ module.title }}</span>
+                    <span class="accordion-meta">{{ module.lessons_count }} lesson{{ module.lessons_count|pluralize }}</span>
                     <span class="accordion-icon">+</span>
                 </button>
 
@@ -83,8 +63,44 @@
         {% endif %}
     </section>
 
+    <section class="section">
+        <h2 class="section-title">About the Instructor</h2>
+        <div class="instructor-card">
+            <div class="instructor-card-avatar">
+                {{ course.instructor|make_list|first }}
+            </div>
+            <div class="instructor-card-body">
+                <h3 class="instructor-card-name">{{ course.instructor }}</h3>
+                <p class="instructor-card-bio">{{ course.instructor.bio|default:"No bio available." }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="course-enrollment">
+        {% if user.is_authenticated %}
+            {% if is_enrolled %}
+            <p class="enrollment-status enrollment-status--enrolled">You are enrolled in this course.</p>
+            <a href="#" class="btn btn-primary">Continue Learning</a>
+            {% else %}
+            <h2 class="enrollment-title">Ready to start learning?</h2>
+            <p class="enrollment-text">Enroll now and begin your journey through this course.</p>
+            <form method="post" action="#" class="enrollment-form">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn--lg">Enroll Now</button>
+            </form>
+            {% endif %}
+        {% else %}
+        <h2 class="enrollment-title">Want to enroll?</h2>
+        <p class="enrollment-prompt">
+            <a href="{% url 'login' %}" class="btn btn-primary">Log in</a>
+            <span class="enrollment-or">or</span>
+            <a href="{% url 'signup' %}" class="btn btn-secondary">Sign up</a>
+        </p>
+        {% endif %}
+    </section>
+
     <footer class="course-meta">
-        <p class="course-created">Updated: {{ course.updated_at|date:"F j, Y" }}</p>
+        <p class="course-created">Last updated {{ course.updated_at|date:"F j, Y" }}</p>
     </footer>
 </article>
 {% endblock %}
