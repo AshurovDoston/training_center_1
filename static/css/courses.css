@@ -18,27 +18,27 @@
  * margins to make the hero stretch full-width, then add padding back inside.
  */
 .hero--large {
-    background-color: var(--color-primary-light);
-    color: var(--color-text);
+    background: linear-gradient(135deg, var(--color-primary), #1e40af);
+    color: var(--color-white);
     text-align: center;
-    padding: var(--spacing-2xl) var(--spacing-xl);
+    padding: var(--spacing-3xl) var(--spacing-xl);
     margin: calc(-1 * var(--spacing-xl)) calc(-1 * var(--spacing-md)) var(--spacing-2xl);
     border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
 }
 
-/* Hero title — dark text on light background */
+/* Hero title — large white text */
 .hero--large .hero-title {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-3xl);
     font-weight: 700;
-    color: var(--color-text);
+    color: var(--color-white);
     margin: 0 0 var(--spacing-md) 0;
     line-height: 1.2;
 }
 
-/* Hero subtitle — muted text for visual hierarchy */
+/* Hero subtitle — slightly transparent white for visual hierarchy */
 .hero--large .hero-subtitle {
     font-size: var(--font-size-lg);
-    color: var(--color-text-muted);
+    color: rgba(255, 255, 255, 0.9); /* White with 90% opacity */
     margin: 0 0 var(--spacing-xl) 0;
     line-height: 1.6;
     max-width: 600px;
@@ -55,15 +55,15 @@
     flex-wrap: wrap; /* Buttons stack on very small screens */
 }
 
-/* On the light hero, secondary button uses white background for contrast */
+/* On the hero, secondary button gets a white transparent look */
 .hero--large .btn-secondary {
-    background-color: var(--color-white);
-    color: var(--color-text);
-    border-color: var(--color-border);
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--color-white);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .hero--large .btn-secondary:hover {
-    background-color: var(--color-bg);
+    background-color: rgba(255, 255, 255, 0.25);
 }
 
 /* ==========================================================================
@@ -658,9 +658,9 @@
    ========================================================================== */
 
 .hero--detail {
-    background-color: var(--color-primary-light);
-    color: var(--color-text);
-    padding: var(--spacing-xl) var(--spacing-xl);
+    background: linear-gradient(135deg, var(--color-primary), #1e40af);
+    color: var(--color-white);
+    padding: var(--spacing-2xl) var(--spacing-xl);
     margin: calc(0 * var(--spacing-xl)) calc(-1 * var(--spacing-md)) var(--spacing-xl);
     border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
 }
@@ -668,19 +668,19 @@
 .hero-detail-title {
     font-size: var(--font-size-2xl);
     font-weight: 700;
-    color: var(--color-text);
+    color: var(--color-white);
     margin: 0 0 var(--spacing-sm) 0;
     line-height: 1.2;
 }
 
 .hero-detail-instructor {
     font-size: var(--font-size-base);
-    color: var(--color-text-muted);
+    color: rgba(255, 255, 255, 0.85);
     margin: 0 0 var(--spacing-md) 0;
 }
 
 .hero-detail-instructor strong {
-    color: var(--color-text);
+    color: var(--color-white);
 }
 
 .course-detail-stats {
@@ -690,13 +690,13 @@
 }
 
 .stat-item--hero {
-    background-color: var(--color-white);
-    border-color: var(--color-border);
-    color: var(--color-text-muted);
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .stat-item--hero strong {
-    color: var(--color-primary);
+    color: var(--color-white);
 }
 
 /* ==========================================================================
@@ -1092,16 +1092,16 @@
 @media (max-width: 768px) {
     /* Reduce hero size on mobile */
     .hero--large {
-        padding: var(--spacing-xl) var(--spacing-md);
+        padding: var(--spacing-2xl) var(--spacing-md);
     }
 
     .hero--large .hero-title {
-        font-size: var(--font-size-xl);
+        font-size: var(--font-size-2xl);
     }
 
     /* Detail hero responsive */
     .hero--detail {
-        padding: var(--spacing-lg) var(--spacing-md);
+        padding: var(--spacing-xl) var(--spacing-md);
     }
 
     .hero-detail-title {
