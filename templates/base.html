@@ -15,34 +15,62 @@
             <div class="container">
                 <div class="header-inner">
                     <a href="{% url 'home' %}" class="brand">Gamzan</a>
-                    <nav class="nav">
+
+                    <button
+                        id="hamburger-btn"
+                        class="hamburger"
+                        aria-label="Toggle navigation menu"
+                        aria-expanded="false"
+                    >
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </button>
+
+                    <nav id="main-nav" class="nav">
+                        <a href="{% url 'course_list' %}" class="nav-link">Courses</a>
+
                         {% if user.is_authenticated %}
-                            <span class="user-greeting">Welcome, {{ user.username }}!</span>
+                            <span class="user-greeting">Hi, {{ user.username }}</span>
                             <form method="post" action="{% url 'logout' %}" class="logout-form">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-secondary btn-sm">Logout</button>
                             </form>
                         {% else %}
-                            <span class="nav-text">Welcome to Gamzan!</span>
                             <a href="{% url 'login' %}" class="nav-link">Login</a>
-                            <span class="nav-separator">|</span>
-                            <a href="{% url 'signup' %}" class="nav-link">Sign Up</a>
+                            <a href="{% url 'signup' %}" class="btn btn-primary btn-sm">Sign Up</a>
                         {% endif %}
                     </nav>
                 </div>
             </div>
         </header>
+
         <main class="main">
             <div class="container">
                 {% block content %}
                 {% endblock %}
             </div>
         </main>
+
         <footer class="footer">
             <div class="container">
-                <p class="footer-text">&copy; 2026 Gamzan</p>
+                <div class="footer-inner">
+                    <p class="footer-text">&copy; 2026 Gamzan. Learn at your own pace.</p>
+                    <nav class="footer-links">
+                        <a href="{% url 'course_list' %}" class="footer-link">Courses</a>
+                        {% if user.is_authenticated %}
+                            <span class="footer-link">{{ user.username }}</span>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="footer-link">Login</a>
+                            <a href="{% url 'signup' %}" class="footer-link">Sign Up</a>
+                        {% endif %}
+                    </nav>
+                </div>
             </div>
         </footer>
     </div>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

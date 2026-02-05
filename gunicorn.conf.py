@@ -1,5 +1,5 @@
 # Server socket
-bind = "127.0.0.1:8050"
+bind = "127.0.0.1:8040"
 
 # Workers
 workers = 3

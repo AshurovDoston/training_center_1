@@ -1,28 +1,104 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Gamzan - Learn at Your Own Pace{% endblock %}
 
 {% block content %}
-<section class="hero">
+
+<section class="hero--large">
     {% if user.is_authenticated %}
-    <h1 class="hero-title">Welcome back, {{ user.username }}!</h1>
+        <h1 class="hero-title">Welcome back, {{ user.username }}!</h1>
     {% else %}
-    <h1 class="hero-title">Welcome to Gamzan</h1>
+        <h1 class="hero-title">Learn Without Limits</h1>
     {% endif %}
-    <p class="hero-subtitle">A simple platform to learn at your own pace.</p>
-    <a href="{% url 'course_list' %}" class="btn btn-primary">Browse Courses</a>
-</section>
-
-<section class="about-section">
-    <h2 class="about-title">What is Gamzan?</h2>
-    <p class="about-text">
-        Gamzan is a learning platform where you can browse structured courses,
-        follow lessons step by step, and track your progress.
-        No rush, no deadlines — just learning.
+    <p class="hero-subtitle">
+        Structured courses, self-paced learning, zero pressure.
+        Start building your skills today.
     </p>
+    <div class="hero-actions">
+        <a href="{% url 'course_list' %}" class="btn btn-primary btn--lg">Browse Courses</a>
+        {% if not user.is_authenticated %}
+            <a href="{% url 'signup' %}" class="btn btn-secondary btn--lg">Sign Up Free</a>
+        {% endif %}
+    </div>
 </section>
 
-<section class="cta-section">
-    <p>Ready to start? <a href="{% url 'course_list' %}" class="link">Explore all courses</a></p>
+{% if featured_courses %}
+<section class="section-home" id="featured-courses">
+    <h2 class="section-home-title">Featured Courses</h2>
+    <p class="section-home-subtitle">Start with one of our most popular courses.</p>
+
+    <div class="course-grid">
+        {% for course in featured_courses %}
+        <article class="course-card">
+            <div class="course-card-body">
+                <h3 class="course-card-title">
+                    <a href="{% url 'course_detail' course.slug %}">{{ course.title }}</a>
+                </h3>
+                <p class="course-card-description">
+                    {{ course.description|truncatewords:15|default:"No description available." }}
+                </p>
+                <p class="course-card-instructor">
+                    <strong>Instructor:</strong> {{ course.instructor }}
+                </p>
+                <div class="course-stats">
+                    <span class="stat-item"><strong>{{ course.modules_count }}</strong> Modules</span>
+                    <span class="stat-item"><strong>{{ course.lessons_count }}</strong> Lessons</span>
+                </div>
+            </div>
+            <div class="course-card-footer">
+                <a href="{% url 'course_detail' course.slug %}" class="btn btn-primary">View Course</a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+
+    <div class="section-home-action">
+        <a href="{% url 'course_list' %}" class="btn btn-secondary">View All Courses</a>
+    </div>
 </section>
+{% endif %}
+
+<section class="section-home">
+    <h2 class="section-home-title">Why Gamzan?</h2>
+    <p class="section-home-subtitle">A simple, focused way to learn new skills.</p>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">&#9201;</div>
+            <h3 class="feature-title">Self-Paced</h3>
+            <p class="feature-text">
+                Learn on your schedule. No deadlines, no rush.
+                Come back whenever you're ready.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">&#128218;</div>
+            <h3 class="feature-title">Structured Lessons</h3>
+            <p class="feature-text">
+                Courses are organized into modules and lessons.
+                Follow a clear path from start to finish.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">&#9989;</div>
+            <h3 class="feature-title">Track Progress</h3>
+            <p class="feature-text">
+                See how far you've come. Pick up right
+                where you left off.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section--prominent">
+    <h2 class="cta-title">Ready to Start Learning?</h2>
+    <p class="cta-text">
+        Join Gamzan today and begin your learning journey.
+    </p>
+    <a href="{% url 'course_list' %}" class="btn btn-primary btn--lg">Explore Courses</a>
+</section>
+
 {% endblock %}

@@ -1,46 +1,68 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Courses - Training Center{% endblock %}
+{% block title %}Courses - Gamzan{% endblock %}
 
 {% block content %}
+
 <header class="page-header">
     <h1 class="page-title">Available Courses</h1>
     <p class="page-subtitle">Browse our course catalog and start learning today.</p>
 </header>
 
+<div class="search-bar">
+    <input
+        type="search"
+        id="course-search"
+        class="search-input"
+        placeholder="Search by course title or instructor..."
+        aria-label="Search courses"
+    >
+</div>
+
 {% if courses %}
-<div class="course-grid">
+<div class="course-grid" id="course-grid">
     {% for course in courses %}
-    <article class="course-card">
+    <article
+        class="course-card"
+        data-title="{{ course.title|lower }}"
+        data-instructor="{{ course.instructor|lower }}"
+    >
         <div class="course-card-body">
             <h2 class="course-card-title">
                 <a href="{% url 'course_detail' course.slug %}">{{ course.title }}</a>
             </h2>
-
             <p class="course-card-description">
                 {{ course.description|truncatewords:20|default:"No description available." }}
             </p>
-
             <p class="course-card-instructor">
                 <strong>Instructor:</strong> {{ course.instructor }}
             </p>
-
             <div class="course-stats">
                 <span class="stat-item"><strong>{{ course.modules_count }}</strong> Modules</span>
                 <span class="stat-item"><strong>{{ course.lessons_count }}</strong> Lessons</span>
                 <span class="stat-item"><strong>{{ course.enrollments_count }}</strong> Enrolled</span>
             </div>
         </div>
-
         <div class="course-card-footer">
             <a href="{% url 'course_detail' course.slug %}" class="btn btn-primary">View Course</a>
         </div>
     </article>
     {% endfor %}
 </div>
+
+<div id="search-no-results" class="empty-state" style="display: none;">
+    <p>No courses match your search. Try a different keyword.</p>
+</div>
+
 {% else %}
 <div class="empty-state">
     <p>No courses available at the moment. Check back later!</p>
 </div>
 {% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/search.js' %}"></script>
 {% endblock %}

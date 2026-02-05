@@ -2,35 +2,63 @@
    Base CSS - Reset, Variables, Typography, Layout
    ========================================================================== */
 
-/* CSS Custom Properties */
+/* ==========================================================================
+   CSS Custom Properties (Design Tokens)
+   ========================================================================== */
+
+/*
+ * CSS custom properties (also called "CSS variables") let you define values
+ * once and reuse them everywhere. If you change a color here, it updates
+ * across the entire site. They're declared inside :root (the <html> element)
+ * so they're available globally.
+ *
+ * Usage: var(--color-primary) in any CSS rule.
+ */
 :root {
-    --color-primary: #2563eb;
-    --color-primary-hover: #1d4ed8;
-    --color-text: #1f2937;
-    --color-text-muted: #6b7280;
-    --color-bg: #f9fafb;
+    /* ---- Colors ---- */
+    --color-primary: #2563eb;          /* Main brand blue — buttons, links, accents */
+    --color-primary-hover: #1d4ed8;    /* Darker blue for hover states */
+    --color-primary-light: #dbeafe;    /* Very light blue — subtle highlights, active states */
+    --color-text: #1f2937;             /* Near-black for body text */
+    --color-text-light: #374151;       /* Slightly lighter — secondary headings */
+    --color-text-muted: #6b7280;       /* Gray — captions, help text, metadata */
+    --color-bg: #f9fafb;              /* Light gray page background */
     --color-white: #ffffff;
-    --color-border: #e5e7eb;
-    --color-error: #dc2626;
+    --color-border: #e5e7eb;           /* Light gray for borders and dividers */
+    --color-error: #dc2626;            /* Red — error messages, required indicators */
+    --color-success: #16a34a;          /* Green — valid form fields, success states */
 
+    /* ---- Typography ---- */
+    /* System font stack: uses the OS default font for fast loading and native feel */
     --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --font-size-base: 1rem;
-    --font-size-sm: 0.875rem;
-    --font-size-lg: 1.125rem;
-    --font-size-xl: 1.5rem;
-    --font-size-2xl: 2rem;
+    --font-size-sm: 0.875rem;   /* 14px — small text, labels, captions */
+    --font-size-base: 1rem;     /* 16px — body text */
+    --font-size-lg: 1.125rem;   /* 18px — card titles, sub-headings */
+    --font-size-xl: 1.5rem;     /* 24px — section headings */
+    --font-size-2xl: 2rem;      /* 32px — page titles */
+    --font-size-3xl: 2.5rem;    /* 40px — hero headline */
 
-    --spacing-xs: 0.25rem;
-    --spacing-sm: 0.5rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --spacing-2xl: 3rem;
+    /* ---- Spacing ---- */
+    /* Consistent spacing scale keeps margins and padding proportional */
+    --spacing-xs: 0.25rem;   /* 4px */
+    --spacing-sm: 0.5rem;    /* 8px */
+    --spacing-md: 1rem;      /* 16px */
+    --spacing-lg: 1.5rem;    /* 24px */
+    --spacing-xl: 2rem;      /* 32px */
+    --spacing-2xl: 3rem;     /* 48px */
+    --spacing-3xl: 4rem;     /* 64px — large sections like hero */
 
-    --border-radius: 0.375rem;
+    /* ---- Borders & Shadows ---- */
+    --border-radius: 0.375rem;     /* 6px — default for inputs, small cards */
+    --border-radius-lg: 0.75rem;   /* 12px — larger cards, feature sections */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+    /* ---- Transitions ---- */
+    /* Reusable timing for smooth animations */
+    --transition-base: 0.2s ease-in-out;
 }
 
 /* Reset */
@@ -96,23 +124,30 @@ body {
     padding: 0 var(--spacing-md);
 }
 
-/* Header */
+/* ==========================================================================
+   Header — Site-wide top navigation bar
+   ========================================================================== */
+
 .header {
     background-color: var(--color-white);
     border-bottom: 1px solid var(--color-border);
     padding: var(--spacing-md) 0;
+    /* sticky keeps the header visible as you scroll down */
+    position: sticky;
+    top: 0;
+    z-index: 100; /* Ensures header stays above other content */
 }
 
 .header-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
     gap: var(--spacing-md);
 }
 
+/* Brand / Logo */
 .brand {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-xl);
     font-weight: 700;
     color: var(--color-primary);
     text-decoration: none;
@@ -122,11 +157,87 @@ body {
     color: var(--color-primary-hover);
 }
 
-/* Navigation */
+/* ==========================================================================
+   Hamburger Button — Mobile menu toggle (hidden on desktop)
+   ========================================================================== */
+
+/*
+ * The hamburger button shows three horizontal lines on mobile.
+ * On desktop, it's hidden with display: none.
+ * When clicked, JavaScript toggles .hamburger--active to animate it.
+ */
+.hamburger {
+    display: none;          /* Hidden on desktop — shown in mobile media query */
+    flex-direction: column; /* Stack the three lines vertically */
+    justify-content: center;
+    gap: 5px;               /* Space between the three lines */
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+}
+
+/* Each of the three horizontal lines in the hamburger icon */
+.hamburger-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-text);
+    border-radius: 2px;
+    /*
+     * transition makes the lines animate smoothly when
+     * the hamburger transforms into an X shape.
+     */
+    transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+/*
+ * .hamburger--active is added by JavaScript when the menu is open.
+ * It transforms the three lines into an X (close icon):
+ * - Top line rotates 45 degrees down
+ * - Middle line disappears (opacity: 0)
+ * - Bottom line rotates -45 degrees up
+ */
+.hamburger--active .hamburger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger--active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger--active .hamburger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ==========================================================================
+   Navigation — Links in the header
+   ========================================================================== */
+
 .nav {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: var(--spacing-lg);
+}
+
+/* Navigation links shared style */
+.nav-link {
+    color: var(--color-text-light);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    transition: color var(--transition-base);
+}
+
+.nav-link:hover {
+    color: var(--color-primary);
+}
+
+/* Highlight the "active" nav link (current page) */
+.nav-link--active {
+    color: var(--color-primary);
 }
 
 .nav-text {
@@ -134,30 +245,15 @@ body {
     font-size: var(--font-size-sm);
 }
 
-.nav-link {
-    color: var(--color-primary);
-    text-decoration: none;
-    font-size: var(--font-size-sm);
-}
-
-.nav-link:hover {
-    text-decoration: underline;
-}
-
 .nav-separator {
     color: var(--color-border);
 }
 
-/* User Info */
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-}
-
+/* User greeting in nav */
 .user-greeting {
     color: var(--color-text);
     font-size: var(--font-size-sm);
+    font-weight: 500;
 }
 
 /* Main Content */
@@ -166,22 +262,60 @@ body {
     padding: var(--spacing-xl) 0;
 }
 
-/* Footer */
+/* ==========================================================================
+   Footer — Site-wide bottom section
+   ========================================================================== */
+
 .footer {
     background-color: var(--color-white);
     border-top: 1px solid var(--color-border);
-    padding: var(--spacing-lg) 0;
-    margin-top: auto;
+    padding: var(--spacing-xl) 0;
+    margin-top: auto; /* Pushes footer to bottom of page via flexbox */
+}
+
+/*
+ * Footer inner uses flexbox to place content and links side by side.
+ * On mobile, they stack vertically (see responsive section below).
+ */
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
 }
 
 .footer-text {
     color: var(--color-text-muted);
     font-size: var(--font-size-sm);
-    text-align: center;
     margin: 0;
 }
 
-/* Buttons */
+/* Footer navigation links */
+.footer-links {
+    display: flex;
+    gap: var(--spacing-lg);
+}
+
+.footer-link {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    transition: color var(--transition-base);
+}
+
+.footer-link:hover {
+    color: var(--color-primary);
+}
+
+/* ==========================================================================
+   Buttons — Reusable button styles
+   ========================================================================== */
+
+/*
+ * .btn is the base button class. Always pair it with a variant like
+ * .btn-primary or .btn-secondary to set colors.
+ */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -192,9 +326,19 @@ body {
     line-height: 1.5;
     border-radius: var(--border-radius);
     cursor: pointer;
-    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    transition: background-color var(--transition-base), border-color var(--transition-base),
+                transform var(--transition-base);
     text-decoration: none;
     border: 1px solid transparent;
+}
+
+/* Subtle lift effect on hover for all buttons */
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
 }
 
 .btn-primary {
@@ -223,6 +367,13 @@ body {
     font-size: var(--font-size-sm);
 }
 
+/* Large button — used in hero sections and prominent CTAs */
+.btn--lg {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: var(--font-size-base);
+    border-radius: var(--border-radius-lg);
+}
+
 /* Logout form inline */
 .logout-form {
     display: inline;
@@ -230,14 +381,62 @@ body {
     padding: 0;
 }
 
-/* Responsive */
-@media (max-width: 640px) {
-    .header-inner {
-        flex-direction: column;
-        align-items: flex-start;
+/* ==========================================================================
+   Responsive — Mobile adaptations (screens 768px and below)
+   ========================================================================== */
+
+/*
+ * @media queries apply styles only when the screen matches the condition.
+ * max-width: 768px means "apply these styles on screens 768px wide or less."
+ * This is a common breakpoint for tablets and phones.
+ */
+@media (max-width: 768px) {
+    /* Show the hamburger button on mobile */
+    .hamburger {
+        display: flex;
     }
 
+    /*
+     * On mobile, the nav is hidden by default.
+     * It becomes a vertical dropdown below the header when .nav--open is added.
+     */
     .nav {
-        flex-wrap: wrap;
+        /* display: none hides the nav completely until JS adds .nav--open */
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+        /*
+         * The nav needs to appear below the header-inner as a full-width block.
+         * We use position: absolute so it overlays the page content.
+         */
+        position: absolute;
+        top: 100%; /* Directly below the header */
+        left: 0;
+        right: 0;
+        background-color: var(--color-white);
+        border-bottom: 1px solid var(--color-border);
+        padding: var(--spacing-md);
+        box-shadow: var(--shadow-md);
+        z-index: 99;
+    }
+
+    /*
+     * .nav--open is toggled by main.js when the hamburger is clicked.
+     * It changes display to flex to show the mobile menu.
+     */
+    .nav--open {
+        display: flex;
+    }
+
+    /* The header needs position: relative so the nav's position: absolute works */
+    .header-inner {
+        position: relative;
+    }
+
+    /* Stack footer content on mobile */
+    .footer-inner {
+        flex-direction: column;
+        text-align: center;
     }
 }
