@@ -1,48 +1,88 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}{{ lesson.title }} - {{ course.title }} - Training Center{% endblock %}
+{% block title %}{{ lesson.title }} - {{ course.title }} - Gamzan{% endblock %}
 
 {% block content %}
-<article class="lesson-detail">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-        <ol class="breadcrumb-list">
-            <li class="breadcrumb-item">
-                <a href="{% url 'course_detail' course.slug %}">{{ course.title }}</a>
-            </li>
-            <li class="breadcrumb-item">
-                <span>{{ lesson.module.title }}</span>
-            </li>
-            <li class="breadcrumb-item breadcrumb-current" aria-current="page">
-                <span>{{ lesson.title }}</span>
-            </li>
-        </ol>
-    </nav>
+<div class="lesson-layout">
 
-    <header class="lesson-header">
-        <h1 class="lesson-title">{{ lesson.title }}</h1>
-    </header>
+    <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Open course navigation">
+        &#9776; Lessons
+    </button>
 
-    <section class="lesson-content">
-        {{ lesson.content|linebreaks }}
-    </section>
-
-    <nav class="lesson-navigation" aria-label="Lesson navigation">
-        <div class="nav-previous">
-            {% if previous_lesson %}
-            <a href="{% url 'lesson_detail' course.slug previous_lesson.pk %}" class="nav-link nav-link-prev">
-                <span class="nav-direction">Previous</span>
-                <span class="nav-title">{{ previous_lesson.title }}</span>
-            </a>
-            {% endif %}
+    <aside id="lesson-sidebar" class="lesson-sidebar">
+        <div class="sidebar-header">
+            <a href="{% url 'course_detail' course.slug %}" class="sidebar-course-title">{{ course.title }}</a>
+            <button id="sidebar-close" class="sidebar-close" aria-label="Close navigation">&times;</button>
         </div>
-        <div class="nav-next">
-            {% if next_lesson %}
-            <a href="{% url 'lesson_detail' course.slug next_lesson.pk %}" class="nav-link nav-link-next">
-                <span class="nav-direction">Next</span>
-                <span class="nav-title">{{ next_lesson.title }}</span>
-            </a>
-            {% endif %}
-        </div>
-    </nav>
-</article>
+
+        <nav class="sidebar-nav">
+            {% for module in course.modules.all %}
+            <div class="sidebar-module">
+                <h3 class="sidebar-module-title">{{ module.title }}</h3>
+                <ul class="sidebar-lesson-list">
+                    {% for mod_lesson in module.lessons.all %}
+                    <li>
+                        <a
+                            href="{% url 'lesson_detail' course.slug mod_lesson.pk %}"
+                            class="sidebar-lesson-link {% if mod_lesson.pk == lesson.pk %}sidebar-lesson--active{% endif %}"
+                        >
+                            {{ mod_lesson.title }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </nav>
+    </aside>
+
+    <article class="lesson-main">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol class="breadcrumb-list">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'course_detail' course.slug %}">{{ course.title }}</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <span>{{ lesson.module.title }}</span>
+                </li>
+                <li class="breadcrumb-item breadcrumb-current" aria-current="page">
+                    <span>{{ lesson.title }}</span>
+                </li>
+            </ol>
+        </nav>
+
+        <header class="lesson-header">
+            <h1 class="lesson-title">{{ lesson.title }}</h1>
+        </header>
+
+        <section class="lesson-content">
+            {{ lesson.content|linebreaks }}
+        </section>
+
+        <nav class="lesson-navigation" aria-label="Lesson navigation">
+            <div class="nav-previous">
+                {% if previous_lesson %}
+                <a href="{% url 'lesson_detail' course.slug previous_lesson.pk %}" class="nav-link nav-link-prev">
+                    <span class="nav-direction">Previous</span>
+                    <span class="nav-title">{{ previous_lesson.title }}</span>
+                </a>
+                {% endif %}
+            </div>
+            <div class="nav-next">
+                {% if next_lesson %}
+                <a href="{% url 'lesson_detail' course.slug next_lesson.pk %}" class="nav-link nav-link-next">
+                    <span class="nav-direction">Next</span>
+                    <span class="nav-title">{{ next_lesson.title }}</span>
+                </a>
+                {% endif %}
+            </div>
+        </nav>
+    </article>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/sidebar.js' %}"></script>
 {% endblock %}

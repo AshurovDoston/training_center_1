@@ -4,11 +4,11 @@ from .models import Course, Lesson
 
 
 def course_list(request):
-    courses = Course.objects.with_full_counts().select_related('instructor__user')
+    courses = Course.objects.with_full_counts().select_related("instructor__user")
     context = {
-        'courses': courses,
+        "courses": courses,
     }
-    return render(request, 'courses/course_list.html', context)
+    return render(request, "courses/course_list.html", context)
 
 
 def course_detail(request, slug):
@@ -37,14 +37,22 @@ class LessonDetailView(DetailView):
 
     def get_queryset(self):
         """Filter lessons to only those belonging to the specified course."""
-        return Lesson.objects.select_related(
-            "module__course__instructor__user"
-        ).filter(module__course__slug=self.kwargs["course_slug"])
+        return Lesson.objects.select_related("module__course__instructor__user").filter(
+            module__course__slug=self.kwargs["course_slug"]
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         lesson = self.object
         course = lesson.module.course
+
+        # Re-fetch course with prefetch_related so the sidebar template can
+        # iterate course.modules.all → module.lessons.all without N+1 queries.
+        course = (
+            Course.objects.prefetch_related("modules__lessons")
+            .select_related("instructor__user")
+            .get(pk=course.pk)
+        )
 
         # Get all lessons in this course, ordered by module order then lesson order
         all_lessons = list(
@@ -60,7 +68,9 @@ class LessonDetailView(DetailView):
 
         context["course"] = course
         context["previous_lesson"] = (
-            all_lessons[current_index - 1] if current_index and current_index > 0 else None
+            all_lessons[current_index - 1]
+            if current_index and current_index > 0
+            else None
         )
         context["next_lesson"] = (
             all_lessons[current_index + 1]
