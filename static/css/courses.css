@@ -18,7 +18,7 @@
  * margins to make the hero stretch full-width, then add padding back inside.
  */
 .hero--large {
-    background: linear-gradient(135deg, var(--color-primary), #1e40af);
+    background: linear-gradient(135deg, var(--color-primary), #6f7fba);
     color: var(--color-white);
     text-align: center;
     padding: var(--spacing-3xl) var(--spacing-xl);
@@ -658,7 +658,7 @@
    ========================================================================== */
 
 .hero--detail {
-    background: linear-gradient(135deg, var(--color-primary), #1e40af);
+    background: linear-gradient(135deg, var(--color-primary), #6f7fba);
     color: var(--color-white);
     padding: var(--spacing-2xl) var(--spacing-xl);
     margin: calc(0 * var(--spacing-xl)) calc(-1 * var(--spacing-md)) var(--spacing-xl);
