@@ -3,79 +3,182 @@
    ========================================================================== */
 
 /* ==========================================================================
-   Hero Section - Centered intro section for landing pages
+   Hero Section — Large gradient banner for the home page
    ========================================================================== */
 
 /*
- * .hero centers content and adds generous vertical padding.
- * Used on home page to create visual focus on the welcome message.
- * max-width constrains text for better readability on wide screens.
+ * .hero--large creates an eye-catching hero section with a gradient background.
+ *
+ * CSS CONCEPT: linear-gradient()
+ * Creates a smooth color transition between two (or more) colors.
+ * The first value (135deg) is the angle — 135deg goes from top-left to bottom-right.
+ * The colors blend from --color-primary (blue) to a slightly different blue (#1e40af).
+ *
+ * Why negative margins? The .main container has horizontal padding. We use negative
+ * margins to make the hero stretch full-width, then add padding back inside.
  */
-.hero {
+.hero--large {
+    background: linear-gradient(135deg, var(--color-primary), #6f7fba);
+    color: var(--color-white);
     text-align: center;
-    padding: var(--spacing-2xl) 0;
-    max-width: 600px;
-    margin: 0 auto var(--spacing-2xl) auto;
+    padding: var(--spacing-3xl) var(--spacing-xl);
+    margin: calc(-1 * var(--spacing-xl)) calc(-1 * var(--spacing-md)) var(--spacing-2xl);
+    border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
 }
 
-.hero .hero-title {
-    font-size: var(--font-size-2xl);
+/* Hero title — large white text */
+.hero--large .hero-title {
+    font-size: var(--font-size-3xl);
     font-weight: 700;
-    color: var(--color-text);
+    color: var(--color-white);
     margin: 0 0 var(--spacing-md) 0;
+    line-height: 1.2;
 }
 
-.hero .hero-subtitle {
+/* Hero subtitle — slightly transparent white for visual hierarchy */
+.hero--large .hero-subtitle {
     font-size: var(--font-size-lg);
-    color: var(--color-text-muted);
+    color: rgba(255, 255, 255, 0.9); /* White with 90% opacity */
     margin: 0 0 var(--spacing-xl) 0;
     line-height: 1.6;
+    max-width: 600px;
+    margin-left: auto;   /* Centers the subtitle by setting left and */
+    margin-right: auto;  /* right margins to auto (text-align centers inline content) */
+    margin-bottom: var(--spacing-xl);
+}
+
+/* Container for the CTA buttons in the hero */
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap; /* Buttons stack on very small screens */
+}
+
+/* On the hero, secondary button gets a white transparent look */
+.hero--large .btn-secondary {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--color-white);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.hero--large .btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.25);
 }
 
 /* ==========================================================================
-   About Section - Brief explanation block
+   Home Page Sections — Reusable section styling for the home page
    ========================================================================== */
 
 /*
- * .about-section provides a contained block for explanatory text.
- * Centered with max-width for comfortable reading.
+ * .section-home provides consistent spacing and centered headings for
+ * each major section on the home page (featured courses, features, etc.).
  */
-.about-section {
-    max-width: 600px;
-    margin: 0 auto var(--spacing-2xl) auto;
-    text-align: center;
+.section-home {
+    margin-bottom: var(--spacing-3xl);
 }
 
-.about-section .about-title {
+.section-home-title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-text);
+    text-align: center;
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.section-home-subtitle {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    text-align: center;
+    margin: 0 0 var(--spacing-xl) 0;
+}
+
+/* "View All Courses" link below the featured courses grid */
+.section-home-action {
+    text-align: center;
+    margin-top: var(--spacing-xl);
+}
+
+/* ==========================================================================
+   Features Grid — "Why Gamzan?" section with icon cards
+   ========================================================================== */
+
+/*
+ * CSS CONCEPT: CSS Grid
+ * display: grid turns the container into a grid layout.
+ * grid-template-columns defines column sizes.
+ * repeat(auto-fill, minmax(280px, 1fr)) means:
+ *   - Create as many columns as will fit
+ *   - Each column is at minimum 280px, at maximum equal share of space
+ *   - Cards automatically wrap to new rows when space runs out
+ */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+/* Individual feature card */
+.feature-card {
+    text-align: center;
+    padding: var(--spacing-xl);
+    background-color: var(--color-white);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--color-border);
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+/* Lift effect on hover — gives a feeling of interactivity */
+.feature-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Large Unicode icon */
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+    line-height: 1;
+}
+
+.feature-title {
     font-size: var(--font-size-lg);
     font-weight: 600;
     color: var(--color-text);
-    margin: 0 0 var(--spacing-md) 0;
+    margin: 0 0 var(--spacing-sm) 0;
 }
 
-.about-section .about-text {
+.feature-text {
+    font-size: var(--font-size-sm);
     color: var(--color-text-muted);
-    line-height: 1.7;
+    line-height: 1.6;
     margin: 0;
 }
 
 /* ==========================================================================
-   CTA Section - Final call to action
+   CTA Section — Prominent call to action at the bottom of the home page
    ========================================================================== */
 
-.cta-section {
+.cta-section--prominent {
     text-align: center;
-    padding: var(--spacing-xl) 0;
-    border-top: 1px solid var(--color-border);
+    padding: var(--spacing-3xl) var(--spacing-xl);
+    background-color: var(--color-white);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--color-border);
+    margin-bottom: var(--spacing-xl);
 }
 
-.cta-section p {
-    margin: 0;
+.cta-title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.cta-text {
+    font-size: var(--font-size-base);
     color: var(--color-text-muted);
-}
-
-.cta-section .link {
-    font-weight: 500;
+    margin: 0 0 var(--spacing-xl) 0;
 }
 
 /* ==========================================================================
@@ -102,6 +205,42 @@
     font-size: var(--font-size-base);
     color: var(--color-text-muted);
     margin: 0;
+}
+
+/* ==========================================================================
+   Search Bar — Input for filtering courses on the course list page
+   ========================================================================== */
+
+.search-bar {
+    margin-bottom: var(--spacing-xl);
+}
+
+/*
+ * The search input is styled large and prominent so users notice it.
+ * The focus state uses the same blue ring pattern as form inputs.
+ */
+.search-input {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: var(--font-size-base);
+    font-family: inherit;
+    color: var(--color-text);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Hide a filtered-out course card (toggled by search.js) */
+.course-card--hidden {
+    display: none;
 }
 
 /* ==========================================================================
@@ -345,13 +484,27 @@
     font-weight: 500;
 }
 
-/* Enrollment section styling */
+/* Enrollment section styling — centered CTA block */
 .course-enrollment {
     background-color: var(--color-bg);
-    padding: var(--spacing-lg);
-    border-radius: var(--border-radius);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
     border: 1px solid var(--color-border);
     margin-bottom: var(--spacing-xl);
+    text-align: center;
+}
+
+.enrollment-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.enrollment-text {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    margin: 0 0 var(--spacing-lg) 0;
 }
 
 .enrollment-status {
@@ -359,12 +512,23 @@
     margin: 0 0 var(--spacing-md) 0;
 }
 
+.enrollment-status--enrolled {
+    color: var(--color-success);
+    font-weight: 500;
+}
+
 .enrollment-prompt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
     margin: 0;
 }
 
-.enrollment-prompt a {
-    color: var(--color-primary);
+.enrollment-or {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
 }
 
 /* ==========================================================================
@@ -393,14 +557,62 @@
     margin-bottom: 0;
 }
 
-.module-title {
-    font-size: var(--font-size-base);
-    font-weight: 600;
-    color: var(--color-text);
-    margin: 0;
+/* ==========================================================================
+   Accordion — Collapsible module headers (used on course detail page)
+   ========================================================================== */
+
+/*
+ * The accordion turns each module into a clickable header that expands
+ * to reveal the lessons inside. accordion.js controls the open/close logic.
+ *
+ * CSS CONCEPT: max-height transition
+ * You can't animate height from 0 to auto in CSS. Instead, we animate
+ * max-height from 0 to a specific pixel value (set by JavaScript).
+ * The transition property makes this change smooth instead of instant.
+ */
+
+/* The clickable header button for each module */
+.accordion-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;  /* Pushes title left, icon right */
+    align-items: center;
     padding: var(--spacing-md) var(--spacing-lg);
     background-color: var(--color-bg);
+    border: none;
     border-bottom: 1px solid var(--color-border);
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--color-text);
+    text-align: left;
+    transition: background-color var(--transition-base);
+}
+
+.accordion-header:hover {
+    background-color: var(--color-primary-light);
+}
+
+/* The module title text inside the accordion header */
+.accordion-title {
+    flex: 1;
+}
+
+/* The +/- icon on the right side of the accordion header */
+.accordion-icon {
+    font-size: var(--font-size-lg);
+    font-weight: 400;
+    color: var(--color-text-muted);
+    margin-left: var(--spacing-md);
+    transition: transform var(--transition-base);
+}
+
+/* The collapsible content panel (hidden by default via max-height: 0) */
+.accordion-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
 }
 
 /*
@@ -438,6 +650,111 @@
     font-size: var(--font-size-sm);
     font-style: italic;
     padding: var(--spacing-md) var(--spacing-lg);
+    margin: 0;
+}
+
+/* ==========================================================================
+   Hero Section — Compact gradient banner for course detail pages
+   ========================================================================== */
+
+.hero--detail {
+    background: linear-gradient(135deg, var(--color-primary), #6f7fba);
+    color: var(--color-white);
+    padding: var(--spacing-2xl) var(--spacing-xl);
+    margin: calc(0 * var(--spacing-xl)) calc(-1 * var(--spacing-md)) var(--spacing-xl);
+    border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+}
+
+.hero-detail-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-white);
+    margin: 0 0 var(--spacing-sm) 0;
+    line-height: 1.2;
+}
+
+.hero-detail-instructor {
+    font-size: var(--font-size-base);
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 var(--spacing-md) 0;
+}
+
+.hero-detail-instructor strong {
+    color: var(--color-white);
+}
+
+.course-detail-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.stat-item--hero {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.stat-item--hero strong {
+    color: var(--color-white);
+}
+
+/* ==========================================================================
+   Accordion Meta — Lesson count label inside accordion headers
+   ========================================================================== */
+
+.accordion-meta {
+    font-size: var(--font-size-sm);
+    font-weight: 400;
+    color: var(--color-text-muted);
+    margin-left: auto;
+    margin-right: var(--spacing-md);
+}
+
+/* ==========================================================================
+   Instructor Card — Card-style instructor profile on course detail
+   ========================================================================== */
+
+.instructor-card {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+}
+
+.instructor-card-avatar {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    border-radius: 50%;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.instructor-card-body {
+    flex: 1;
+}
+
+.instructor-card-name {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.instructor-card-bio {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
     margin: 0;
 }
 
@@ -511,6 +828,158 @@
    Lesson Detail - Lesson page specific styles
    ========================================================================== */
 
+/* ==========================================================================
+   Lesson Layout — Two-column: sidebar + main content
+   ========================================================================== */
+
+/*
+ * CSS CONCEPT: CSS Grid for page layout
+ * grid-template-columns: 280px 1fr creates two columns:
+ * - Left column is exactly 280px wide (sidebar)
+ * - Right column takes all remaining space (1fr = 1 fraction of free space)
+ * On mobile, this becomes a single column (see responsive section).
+ */
+.lesson-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: var(--spacing-xl);
+    align-items: start; /* Sidebar and main align to the top */
+}
+
+/* The main content area (right column) */
+.lesson-main {
+    min-width: 0; /* Prevents grid blowout from long content */
+}
+
+/* ==========================================================================
+   Lesson Sidebar — Navigation showing all modules and lessons
+   ========================================================================== */
+
+.lesson-sidebar {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    /*
+     * position: sticky keeps the sidebar visible as you scroll.
+     * top: 80px = stays 80px from the top (below the sticky header).
+     * max-height limits how tall it can be, with overflow-y: auto adding a scrollbar.
+     */
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+
+/* Sidebar header with course title and close button */
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.sidebar-course-title {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration: none;
+}
+
+.sidebar-course-title:hover {
+    color: var(--color-primary);
+}
+
+/* Close button — only visible on mobile */
+.sidebar-close {
+    display: none;
+    background: none;
+    border: none;
+    font-size: var(--font-size-xl);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+/* Module title inside the sidebar */
+.sidebar-module-title {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: var(--spacing-md) var(--spacing-lg) var(--spacing-xs);
+    margin: 0;
+}
+
+/* List of lessons inside each module */
+.sidebar-lesson-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+/* Individual lesson link in the sidebar */
+.sidebar-lesson-link {
+    display: block;
+    padding: var(--spacing-xs) var(--spacing-lg);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-light);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: background-color var(--transition-base), border-color var(--transition-base);
+}
+
+.sidebar-lesson-link:hover {
+    background-color: var(--color-bg);
+    color: var(--color-primary);
+}
+
+/* Highlighted current lesson */
+.sidebar-lesson--active {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    font-weight: 500;
+    border-left-color: var(--color-primary);
+}
+
+/* Toggle button — visible only on mobile */
+.sidebar-toggle {
+    display: none; /* Hidden on desktop, shown in mobile media query */
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-sm);
+    font-family: inherit;
+    color: var(--color-text);
+    cursor: pointer;
+    margin-bottom: var(--spacing-md);
+}
+
+/* Dark backdrop overlay behind sidebar on mobile */
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 199;
+}
+
+.sidebar-backdrop--visible {
+    display: block;
+}
+
+/* ==========================================================================
+   Lesson Detail — Lesson-specific styles (inside lesson-main)
+   ========================================================================== */
+
 .lesson-detail {
     max-width: 800px;
 }
@@ -538,6 +1007,36 @@
 
 .lesson-content p {
     margin: 0 0 var(--spacing-md) 0;
+}
+
+/* ==========================================================================
+   Lesson Video — Responsive video player container
+   ========================================================================== */
+
+/*
+ * .video-container wraps the <video> element with rounded corners and a shadow.
+ * overflow: hidden clips the video corners to match border-radius.
+ * background-color: #000 shows a black frame while video metadata loads.
+ */
+.video-container {
+    width: 100%;
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    background-color: #000;
+    box-shadow: var(--shadow-md);
+}
+
+/*
+ * display: block removes the small inline gap browsers add below <video>.
+ * aspect-ratio: 16 / 9 maintains widescreen proportions at any width.
+ * object-fit: contain ensures the full video is visible (may letterbox).
+ */
+.video-player {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
 }
 
 /* ==========================================================================
@@ -616,6 +1115,73 @@
    Responsive Adjustments
    ========================================================================== */
 
+/* ==========================================================================
+   Responsive Adjustments — Mobile-friendly overrides
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    /* Reduce hero size on mobile */
+    .hero--large {
+        padding: var(--spacing-2xl) var(--spacing-md);
+    }
+
+    .hero--large .hero-title {
+        font-size: var(--font-size-2xl);
+    }
+
+    /* Detail hero responsive */
+    .hero--detail {
+        padding: var(--spacing-xl) var(--spacing-md);
+    }
+
+    .hero-detail-title {
+        font-size: var(--font-size-xl);
+    }
+
+    /* Reduce video container rounding and shadow on mobile */
+    .video-container {
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+    }
+
+    /* Switch lesson layout from two columns to one */
+    .lesson-layout {
+        grid-template-columns: 1fr;
+    }
+
+    /* Show the sidebar toggle button on mobile */
+    .sidebar-toggle {
+        display: flex;
+    }
+
+    /* Show the close button inside the sidebar on mobile */
+    .sidebar-close {
+        display: block;
+    }
+
+    /*
+     * On mobile, the sidebar becomes a fixed overlay that slides in from the left.
+     * transform: translateX(-100%) moves it fully off-screen to the left.
+     * When sidebar.js adds .sidebar--open, translateX(0) slides it back in.
+     */
+    .lesson-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 300px;
+        max-height: 100vh;
+        border-radius: 0;
+        z-index: 200;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebar--open {
+        transform: translateX(0);
+    }
+}
+
 @media (max-width: 640px) {
     /* Stack lesson navigation on mobile */
     .lesson-navigation {
@@ -630,6 +1196,13 @@
 
     .nav-next {
         margin-left: 0;
+    }
+
+    /* Instructor card stacks vertically on small screens */
+    .instructor-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
 
     /* Reduce course card padding on mobile */

@@ -55,7 +55,7 @@ class CourseAdmin(admin.ModelAdmin):
 class LessonInline(admin.TabularInline):
     model = Lesson
     extra = 1
-    fields = ("title", "order", "is_deleted")
+    fields = ("title", "order", "video", "is_deleted")
     ordering = ("order",)
     show_change_link = True
 
@@ -89,6 +89,7 @@ class LessonAdmin(admin.ModelAdmin):
         "get_course",
         "order",
         "has_content",
+        "has_video",
         "updated_at",
     )
     search_fields = ("title", "module__title", "module__course__title")
@@ -103,6 +104,10 @@ class LessonAdmin(admin.ModelAdmin):
     def get_course(self, obj):
         return obj.module.course
 
-    @admin.display(description="Content?")
+    @admin.display(description="Content?", boolean=True)
     def has_content(self, obj):
-        return "✓" if obj.content else "✗"
+        return bool(obj.content)
+
+    @admin.display(description="Video?", boolean=True)
+    def has_video(self, obj):
+        return bool(obj.video)
