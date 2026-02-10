@@ -13,5 +13,5 @@ urlpatterns = [
 
 # Serve media files through Django's dev server ONLY in DEBUG mode.
 # In production, media is served by the CDN / object storage (e.g., DO Spaces).
-if settings.DEBUG:
+if settings.DEBUG and hasattr(settings, "MEDIA_ROOT"):
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

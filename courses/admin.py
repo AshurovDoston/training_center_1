@@ -104,10 +104,10 @@ class LessonAdmin(admin.ModelAdmin):
     def get_course(self, obj):
         return obj.module.course
 
-    @admin.display(description="Content?")
+    @admin.display(description="Content?", boolean=True)
     def has_content(self, obj):
-        return "✓" if obj.content else "✗"
+        return bool(obj.content)
 
-    @admin.display(description="Video?")
+    @admin.display(description="Video?", boolean=True)
     def has_video(self, obj):
-        return "✓" if obj.video else "✗"
+        return bool(obj.video)
