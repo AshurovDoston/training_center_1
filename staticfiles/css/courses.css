@@ -1010,6 +1010,36 @@
 }
 
 /* ==========================================================================
+   Lesson Video — Responsive video player container
+   ========================================================================== */
+
+/*
+ * .video-container wraps the <video> element with rounded corners and a shadow.
+ * overflow: hidden clips the video corners to match border-radius.
+ * background-color: #000 shows a black frame while video metadata loads.
+ */
+.video-container {
+    width: 100%;
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    background-color: #000;
+    box-shadow: var(--shadow-md);
+}
+
+/*
+ * display: block removes the small inline gap browsers add below <video>.
+ * aspect-ratio: 16 / 9 maintains widescreen proportions at any width.
+ * object-fit: contain ensures the full video is visible (may letterbox).
+ */
+.video-player {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+}
+
+/* ==========================================================================
    Lesson Navigation - Previous/Next lesson links
    ========================================================================== */
 
@@ -1106,6 +1136,12 @@
 
     .hero-detail-title {
         font-size: var(--font-size-xl);
+    }
+
+    /* Reduce video container rounding and shadow on mobile */
+    .video-container {
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
     }
 
     /* Switch lesson layout from two columns to one */

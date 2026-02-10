@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Third-party apps
+    "storages",
     # Local apps
     "core.apps.CoreConfig",
     "home.apps.HomeConfig",
@@ -122,11 +124,52 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
-
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Media files (user-uploaded content: videos, images, documents)
+# https://docs.djangoproject.com/en/6.0/topics/files/
+USE_S3 = env.bool("USE_S3", default=False)
+
+if USE_S3:
+    # Production: DigitalOcean Spaces (S3-compatible object storage)
+    # boto3 expects AWS_* variable names — we map our DO_SPACES_* env vars to them
+    AWS_ACCESS_KEY_ID = env("DO_SPACES_ACCESS_KEY")
+    AWS_SECRET_ACCESS_KEY = env("DO_SPACES_SECRET_KEY")
+    AWS_STORAGE_BUCKET_NAME = env("DO_SPACES_BUCKET_NAME")
+    AWS_S3_REGION_NAME = env("DO_SPACES_REGION", default="sfo3")
+    AWS_S3_ENDPOINT_URL = env("DO_SPACES_ENDPOINT_URL")
+    AWS_S3_OBJECT_PARAMETERS = {
+        "CacheControl": "max-age=86400",  # Browser/CDN caches files for 24 hours
+    }
+    AWS_DEFAULT_ACL = "public-read"
+    AWS_QUERYSTRING_AUTH = False  # Clean URLs without signed query strings
+
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+
+    MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/"
+
+else:
+    # Development: local filesystem
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+
+    MEDIA_URL = "media/"
+    MEDIA_ROOT = BASE_DIR / "media"
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 

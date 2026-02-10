@@ -14,6 +14,7 @@ db.sqlite3
 /static/ # Collected static files can be generated
 staticfiles/ # Directory for collected static files
 /media/  # User uploaded media (often handled separately in deployment)
+media/  # User uploaded media (often handled separately in deployment)
 migrations/00*.py # Optional: some teams ignore migration files, but it is generally recommended to include them in version control
 
 # Environment variables & secrets

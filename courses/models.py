@@ -1,5 +1,7 @@
 from django.db import models
+from django.core.validators import FileExtensionValidator
 from core.models import SoftDeleteModel
+from .validators import validate_video_file_size
 from core.mixins import SlugMixin
 from profiles.models import Instructor
 from .managers import (
@@ -104,6 +106,16 @@ class Lesson(SoftDeleteModel):
     module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name="lessons")
     title = models.CharField(max_length=200)
     content = models.TextField(blank=True)
+    video = models.FileField(
+        upload_to="lessons/videos/",
+        blank=True,
+        null=True,
+        validators=[
+            FileExtensionValidator(allowed_extensions=["mp4", "webm", "ogg"]),
+            validate_video_file_size,
+        ],
+        help_text="Supported formats: .mp4, .webm, .ogg (max 500MB)",
+    )
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
