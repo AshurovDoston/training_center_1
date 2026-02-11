@@ -14,7 +14,6 @@ class Student(SoftDeleteModel):
 
     def __str__(self):
         return self.user.get_username()
-        # return f"Student: {self.user.get_username()}"
 
 
 class Instructor(SoftDeleteModel):

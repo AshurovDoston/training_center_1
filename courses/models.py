@@ -37,7 +37,7 @@ class Course(SlugMixin, SoftDeleteModel):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     instructor = models.ForeignKey(
-        Instructor, on_delete=models.CASCADE, related_name="courses"
+        Instructor, on_delete=models.PROTECT, related_name="courses"
     )
 
     objects = CourseManager()
@@ -80,7 +80,7 @@ class Module(SoftDeleteModel):
         verbose_name_plural = "Modules"
         ordering = ["order"]
 
-        ### If you want to enforce unique ordering of modules within a course, uncomment below:
+        # Enforces unique ordering of modules within a course
         constraints = [
             models.UniqueConstraint(
                 fields=["course", "order"], name="unique_module_order_per_course"
@@ -127,7 +127,7 @@ class Lesson(SoftDeleteModel):
         verbose_name_plural = "Lessons"
         ordering = ["order"]
 
-        ### If you want to enforce unique ordering of lessons within a module, uncomment below:
+        # Enforces unique ordering of lessons within a module
         constraints = [
             models.UniqueConstraint(
                 fields=["module", "order"], name="unique_lesson_order_per_module"

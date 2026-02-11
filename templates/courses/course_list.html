@@ -20,9 +20,9 @@
     >
 </div>
 
-{% if courses %}
+{% if page %}
 <div class="course-grid" id="course-grid">
-    {% for course in courses %}
+    {% for course in page %}
     <article
         class="course-card"
         data-title="{{ course.title|lower }}"
@@ -50,6 +50,20 @@
     </article>
     {% endfor %}
 </div>
+
+{% if page.paginator.num_pages > 1 %}
+<nav class="pagination" aria-label="Course list pages">
+    {% if page.has_previous %}
+    <a href="?page={{ page.previous_page_number }}" class="btn btn-secondary">Previous</a>
+    {% endif %}
+
+    <span class="pagination-info">Page {{ page.number }} of {{ page.paginator.num_pages }}</span>
+
+    {% if page.has_next %}
+    <a href="?page={{ page.next_page_number }}" class="btn btn-secondary">Next</a>
+    {% endif %}
+</nav>
+{% endif %}
 
 <div id="search-no-results" class="empty-state" style="display: none;">
     <p>No courses match your search. Try a different keyword.</p>

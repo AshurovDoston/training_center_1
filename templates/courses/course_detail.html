@@ -80,11 +80,13 @@
         {% if user.is_authenticated %}
             {% if is_enrolled %}
             <p class="enrollment-status enrollment-status--enrolled">You are enrolled in this course.</p>
-            <a href="#" class="btn btn-primary">Continue Learning</a>
+            {% if first_lesson %}
+            <a href="{% url 'lesson_detail' course.slug first_lesson.pk %}" class="btn btn-primary">Continue Learning</a>
+            {% endif %}
             {% else %}
             <h2 class="enrollment-title">Ready to start learning?</h2>
             <p class="enrollment-text">Enroll now and begin your journey through this course.</p>
-            <form method="post" action="#" class="enrollment-form">
+            <form method="post" action="{% url 'enroll_in_course' course.slug %}" class="enrollment-form">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-primary btn--lg">Enroll Now</button>
             </form>

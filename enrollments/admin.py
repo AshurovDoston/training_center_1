@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Enrollment, LessonProgress
+from django.db.models import Count, Q, Subquery, OuterRef
 
-# Register your models here.
+from .models import Enrollment, LessonProgress
 
 
 class LessonProgressInline(admin.TabularInline):
@@ -16,7 +16,11 @@ class LessonProgressInline(admin.TabularInline):
 @admin.register(Enrollment)
 class EnrollmentAdmin(admin.ModelAdmin):
     list_display = ("student", "course", "progress_display", "enrolled_at")
-    search_fields = ("student__user__username", "student__user__email", "course__title")
+    search_fields = (
+        "student__user__username",
+        "student__user__email",
+        "course__title",
+    )
     list_filter = ("course", "student", "is_deleted", "enrolled_at")
     ordering = ("course",)
     list_select_related = (
@@ -27,16 +31,36 @@ class EnrollmentAdmin(admin.ModelAdmin):
     readonly_fields = ("enrolled_at",)
     inlines = [LessonProgressInline]
 
-    @admin.display(description="Progress")
-    def progress_display(self, obj):
+    def get_queryset(self, request):
         from courses.models import Lesson
 
-        total_lessons = Lesson.objects.filter(module__course=obj.course).count()
-        if total_lessons == 0:
+        qs = super().get_queryset(request)
+        # Annotate total lessons per course and completed lessons per enrollment
+        total_subquery = (
+            Lesson.objects.filter(module__course=OuterRef("course"), is_deleted=False)
+            .values("module__course")
+            .annotate(cnt=Count("id"))
+            .values("cnt")
+        )
+        return qs.annotate(
+            _total_lessons=Subquery(total_subquery),
+            _completed_lessons=Count(
+                "lesson_progress",
+                filter=Q(
+                    lesson_progress__is_completed=True,
+                    lesson_progress__is_deleted=False,
+                ),
+            ),
+        )
+
+    @admin.display(description="Progress")
+    def progress_display(self, obj):
+        total = obj._total_lessons or 0
+        completed = obj._completed_lessons or 0
+        if total == 0:
             return "0/0 (0%)"
-        completed_lessons = obj.lesson_progress.filter(is_completed=True).count()
-        percentage = int((completed_lessons / total_lessons) * 100)
-        return f"{completed_lessons}/{total_lessons} ({percentage}%)"
+        percentage = int((completed / total) * 100)
+        return f"{completed}/{total} ({percentage}%)"
 
 
 @admin.register(LessonProgress)

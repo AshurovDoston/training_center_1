@@ -25,8 +25,12 @@ class Enrollment(SoftDeleteModel):
     class Meta:
         verbose_name = "Enrollment"
         verbose_name_plural = "Enrollments"
-        unique_together = ("student", "course")
         ordering = ["-enrolled_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["student", "course"], name="unique_enrollment_per_student"
+            ),
+        ]
 
     def __str__(self):
         return f"{self.student} enrolled in {self.course}"
@@ -52,8 +56,13 @@ class LessonProgress(SoftDeleteModel):
     class Meta:
         verbose_name = "Lesson Progress"
         verbose_name_plural = "Lesson Progress"
-        unique_together = ("enrollment", "lesson")
         ordering = ["-completed_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["enrollment", "lesson"],
+                name="unique_progress_per_lesson",
+            ),
+        ]
 
     def __str__(self):
         return f"{self.enrollment.student} on {self.lesson}"
