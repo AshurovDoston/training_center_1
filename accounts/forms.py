@@ -2,10 +2,10 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 
+
 class CustomUserCreationForm(UserCreationForm):
     age = forms.IntegerField(required=False, min_value=1)
     phone = forms.CharField(required=False, max_length=15)
-
 
     class Meta:
         model = CustomUser
@@ -25,7 +25,9 @@ class CustomUserCreationForm(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data.get("email").lower()
         if CustomUser.objects.filter(email=email).exists():
-            raise forms.ValidationError("Bunday email manzili allaqachon ro'yxatdan o'tgan.")
+            raise forms.ValidationError(
+                "Bunday email manzili allaqachon ro'yxatdan o'tgan."
+            )
         return email
 
     # def save(self, commit=True):

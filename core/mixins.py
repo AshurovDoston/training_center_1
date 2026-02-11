@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.utils.text import slugify
 
+
 class UUIDMixin(models.Model):
     """
     Mixin that adds a UUID field for external-safe identification.
@@ -31,6 +32,7 @@ class UUIDMixin(models.Model):
     class Meta:
         abstract = True
 
+
 class SlugMixin(models.Model):
     """
     Auto-generates a unique slug from `slug_source_field` (default: "title").
@@ -57,20 +59,24 @@ class SlugMixin(models.Model):
         # returns the value of the field specified by slug_source_field
         value = getattr(self, self.slug_source_field, "") or ""
         return str(value).strip()
-    
+
     def _generate_base_slug(self) -> str:
         base = slugify(self._get_slug_source_value())
         if not base:
             base = str(uuid.uuid4())[:8]  # fallback to random string if source is empty
         return base
-    
+
     def _generate_unique_slug(self) -> str:
         base_slug = self._generate_base_slug()
         slug = base_slug
         ModelClass = self.__class__
 
-        qs = ModelClass.all_objects.all() if hasattr(ModelClass, "all_objects") else ModelClass.objects.all()
-        qs = qs.exclude(pk = self.pk)
+        qs = (
+            ModelClass.all_objects.all()
+            if hasattr(ModelClass, "all_objects")
+            else ModelClass.objects.all()
+        )
+        qs = qs.exclude(pk=self.pk)
 
         counter = 2
         while qs.filter(slug=slug).exists():
@@ -78,7 +84,7 @@ class SlugMixin(models.Model):
             counter += 1
 
         return slug
-    
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = self._generate_unique_slug()

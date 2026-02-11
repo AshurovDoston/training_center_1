@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
 
+
 def signup_view(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
@@ -10,8 +11,6 @@ def signup_view(request):
     else:
         form = CustomUserCreationForm()
 
-    context = {
-        "form": form
-    }
-        
+    context = {"form": form}
+
     return render(request, "registration/signup.html", context)
