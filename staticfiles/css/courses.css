@@ -902,13 +902,11 @@
     line-height: 1;
 }
 
-/* Module title inside the sidebar */
+/* Module title — bold section header */
 .sidebar-module-title {
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-text);
     padding: var(--spacing-md) var(--spacing-lg) var(--spacing-xs);
     margin: 0;
 }
@@ -920,10 +918,10 @@
     margin: 0 0 var(--spacing-sm) 0;
 }
 
-/* Individual lesson link in the sidebar */
+/* Individual lesson link — indented under the module title */
 .sidebar-lesson-link {
     display: block;
-    padding: var(--spacing-xs) var(--spacing-lg);
+    padding: var(--spacing-xs) var(--spacing-lg) var(--spacing-xs) calc(var(--spacing-lg) + var(--spacing-md));
     font-size: var(--font-size-sm);
     color: var(--color-text-light);
     text-decoration: none;
@@ -1136,12 +1134,6 @@
 
     .hero-detail-title {
         font-size: var(--font-size-xl);
-    }
-
-    /* Reduce video container rounding and shadow on mobile */
-    .video-container {
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow-sm);
     }
 
     /* Switch lesson layout from two columns to one */

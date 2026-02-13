@@ -1,14 +1,19 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.db.models import Prefetch
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import DetailView
-from .models import Course, Module, Lesson
+
+from .models import Course, Lesson, Module
 from enrollments.models import Enrollment
 
 
 def course_list(request):
     courses = Course.objects.with_full_counts().select_related("instructor__user")
+    paginator = Paginator(courses, 12)
+    page = paginator.get_page(request.GET.get("page"))
     context = {
-        "courses": courses,
+        "page": page,
     }
     return render(request, "courses/course_list.html", context)
 
@@ -16,10 +21,11 @@ def course_list(request):
 def course_detail(request, slug):
     modules_qs = Module.objects.with_lessons_count().prefetch_related("lessons")
 
-    course = (
-        Course.objects.select_related("instructor__user")
-        .prefetch_related(Prefetch("modules", queryset=modules_qs))
-        .get(slug=slug)
+    course = get_object_or_404(
+        Course.objects.select_related("instructor__user").prefetch_related(
+            Prefetch("modules", queryset=modules_qs)
+        ),
+        slug=slug,
     )
 
     modules = list(course.modules.all())
@@ -27,24 +33,29 @@ def course_detail(request, slug):
     lessons_count = sum(m.lessons_count for m in modules)
 
     is_enrolled = False
-    if request.user.is_authenticated:
-        try:
-            is_enrolled = Enrollment.objects.filter(
-                student=request.user.student_profile, course=course
-            ).exists()
-        except request.user._meta.model.student_profile.RelatedObjectDoesNotExist:
-            pass
+    if request.user.is_authenticated and hasattr(request.user, "student_profile"):
+        is_enrolled = Enrollment.objects.filter(
+            student=request.user.student_profile, course=course
+        ).exists()
+
+    # Find first lesson for the "Continue Learning" link
+    first_lesson = None
+    if modules:
+        lessons = list(modules[0].lessons.all())
+        if lessons:
+            first_lesson = lessons[0]
 
     context = {
         "course": course,
         "modules_count": modules_count,
         "lessons_count": lessons_count,
         "is_enrolled": is_enrolled,
+        "first_lesson": first_lesson,
     }
     return render(request, "courses/course_detail.html", context)
 
 
-class LessonDetailView(DetailView):
+class LessonDetailView(LoginRequiredMixin, DetailView):
     """
     Display a single lesson with navigation to previous/next lessons.
 
@@ -68,19 +79,25 @@ class LessonDetailView(DetailView):
         course = lesson.module.course
 
         # Re-fetch course with prefetch_related so the sidebar template can
-        # iterate course.modules.all → module.lessons.all without N+1 queries.
+        # iterate course.modules.all -> module.lessons.all without N+1 queries.
         course = (
-            Course.objects.prefetch_related("modules__lessons")
+            Course.objects.prefetch_related(
+                Prefetch(
+                    "modules",
+                    queryset=Module.objects.prefetch_related("lessons").order_by(
+                        "order"
+                    ),
+                )
+            )
             .select_related("instructor__user")
             .get(pk=course.pk)
         )
 
-        # Get all lessons in this course, ordered by module order then lesson order
-        all_lessons = list(
-            Lesson.objects.filter(module__course=course)
-            .select_related("module")
-            .order_by("module__order", "order")
-        )
+        # Build ordered lesson list from prefetched data (no extra query)
+        all_lessons = []
+        for module in course.modules.all():
+            for les in module.lessons.all():
+                all_lessons.append(les)
 
         # Find current lesson's position and get prev/next
         current_index = next(

@@ -1,0 +1,257 @@
+/* ==========================================================================
+   Forms CSS — Form elements, layout, and validation styling
+   ========================================================================== */
+
+/* Form Container */
+.form {
+    width: 100%;
+}
+
+/* ==========================================================================
+   Form Group — Wraps one label + input + error message
+   ========================================================================== */
+
+/*
+ * .form-group replaces Django's form.as_p output, giving us full control
+ * over how each field is displayed. Each group has consistent spacing.
+ */
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+/*
+ * .form-row places two form-groups side by side using flexbox.
+ * Used for optional fields like age + phone that fit naturally together.
+ */
+.form-row {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+/* Each child in a form-row takes 50% width (flex: 1 means equal share) */
+.form-group--half {
+    flex: 1;
+}
+
+/* ==========================================================================
+   Labels
+   ========================================================================== */
+
+/* Django form.as_p outputs <p> tags wrapping label and input */
+.form p {
+    margin: 0 0 var(--spacing-md) 0;
+}
+
+.form label,
+.form-group label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+/* Required field indicator (red asterisk) */
+.required {
+    color: var(--color-error);
+}
+
+/* ==========================================================================
+   Text Inputs, Selects, Textareas
+   ========================================================================== */
+
+.form input[type="text"],
+.form input[type="password"],
+.form input[type="email"],
+.form input[type="number"],
+.form input[type="tel"],
+.form input[type="url"],
+.form input[type="date"],
+.form input[type="search"],
+.form select,
+.form textarea,
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="email"],
+.form-group input[type="number"],
+.form-group input[type="tel"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-base);
+    font-family: inherit;
+    line-height: 1.5;
+    color: var(--color-text);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+/* Focus state — blue border with subtle glow */
+.form input[type="text"]:focus,
+.form input[type="password"]:focus,
+.form input[type="email"]:focus,
+.form input[type="number"]:focus,
+.form input[type="tel"]:focus,
+.form input[type="url"]:focus,
+.form input[type="date"]:focus,
+.form input[type="search"]:focus,
+.form select:focus,
+.form textarea:focus,
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Checkbox and Radio */
+.form input[type="checkbox"],
+.form input[type="radio"] {
+    width: auto;
+    margin-right: var(--spacing-sm);
+}
+
+/* ==========================================================================
+   Help Text and Error Messages
+   ========================================================================== */
+
+/* Help text — Django outputs .helptext class */
+.form .helptext {
+    display: block;
+    margin-top: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+/* Error messages — Django outputs .errorlist */
+.form .errorlist {
+    list-style: none;
+    margin: var(--spacing-xs) 0 0 0;
+    padding: 0;
+}
+
+.form .errorlist li {
+    font-size: var(--font-size-sm);
+    color: var(--color-error);
+}
+
+/* Non-field errors (form-level errors) */
+.form > .errorlist {
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: var(--border-radius);
+}
+
+/* ==========================================================================
+   Validation States — Added by validate.js
+   ========================================================================== */
+
+/*
+ * .field-error shows a red error message below the input.
+ * JS error placeholders start empty — :empty hides them so they take no space.
+ */
+.field-error {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-error);
+    margin-top: var(--spacing-xs);
+}
+
+/* Hide JS error placeholders when they have no text content */
+.js-error:empty {
+    display: none;
+}
+
+/* Red border on invalid inputs (class added by validate.js) */
+.form-group--error input {
+    border-color: var(--color-error);
+}
+
+.form-group--error input:focus {
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+/* Green border on valid inputs (class added by validate.js) */
+.form-group--valid input {
+    border-color: var(--color-success);
+}
+
+.form-group--valid input:focus {
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+/* Form-level error display (non-field errors rendered manually) */
+.form-errors {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.form-error-message {
+    color: var(--color-error);
+    font-size: var(--font-size-sm);
+    margin: 0;
+}
+
+/* ==========================================================================
+   Form Actions and Submit Button
+   ========================================================================== */
+
+.form-actions {
+    margin-top: var(--spacing-lg);
+}
+
+/* Submit button styling */
+.form button[type="submit"],
+.form input[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    font-family: inherit;
+    line-height: 1.5;
+    color: var(--color-white);
+    background-color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color var(--transition-base);
+}
+
+.form button[type="submit"]:hover,
+.form input[type="submit"]:hover {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+}
+
+/* Required field indicator (for Django's label.required) */
+.form label.required::after {
+    content: " *";
+    color: var(--color-error);
+}
+
+/* ==========================================================================
+   Responsive — Stack form-row on small screens
+   ========================================================================== */
+
+@media (max-width: 480px) {
+    .form-row {
+        flex-direction: column;
+    }
+}

@@ -4,7 +4,9 @@ from accounts.models import CustomUser
 
 
 class Student(SoftDeleteModel):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="student_profile")
+    user = models.OneToOneField(
+        CustomUser, on_delete=models.CASCADE, related_name="student_profile"
+    )
 
     class Meta:
         verbose_name = "Student"
@@ -12,12 +14,15 @@ class Student(SoftDeleteModel):
 
     def __str__(self):
         return self.user.get_username()
-        # return f"Student: {self.user.get_username()}"
 
 
 class Instructor(SoftDeleteModel):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="instructor_profile")
-    bio = models.TextField(blank=True, help_text="Instructor's biography or introduction")
+    user = models.OneToOneField(
+        CustomUser, on_delete=models.CASCADE, related_name="instructor_profile"
+    )
+    bio = models.TextField(
+        blank=True, help_text="Instructor's biography or introduction"
+    )
 
     class Meta:
         verbose_name = "Instructor"

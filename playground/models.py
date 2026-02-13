@@ -2,6 +2,7 @@ from django.db import models
 from core.mixins import SlugMixin
 from core.models import SoftDeleteModel
 
+
 # Create your models here.
 class SlugTestModel(SlugMixin, SoftDeleteModel):
     title = models.CharField(max_length=200)
