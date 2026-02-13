@@ -19,7 +19,7 @@
         <nav class="sidebar-nav">
             {% for module in course.modules.all %}
             <div class="sidebar-module">
-                <h3 class="sidebar-module-title">{{ module.order }}. {{ module.title }}</h3>
+                <h3 class="sidebar-module-title">{{ module.order|add:1 }}. {{ module.title }}</h3>
                 <ul class="sidebar-lesson-list">
                     {% for mod_lesson in module.lessons.all %}
                     <li>
