@@ -18,7 +18,7 @@ def home_view(request):
     """
     featured_courses = Course.objects.with_full_counts().select_related(
         "instructor__user"
-    )[:3]
+    )[:4]
     content = {
         "featured_courses": featured_courses,
     }

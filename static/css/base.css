@@ -51,6 +51,7 @@
     /* ---- Borders & Shadows ---- */
     --border-radius: 0.375rem;     /* 6px — default for inputs, small cards */
     --border-radius-lg: 0.75rem;   /* 12px — larger cards, feature sections */
+    --border-radius-xl: 1rem;      /* 16px — large rounded cards, hero image */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
@@ -219,7 +220,23 @@ body {
 .nav {
     display: flex;
     align-items: center;
+    flex: 1;
+    justify-content: space-between;
+}
+
+/* Center navigation links */
+.nav-center {
+    display: flex;
+    align-items: center;
     gap: var(--spacing-lg);
+    margin: 0 auto;
+}
+
+/* Right auth buttons */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
 }
 
 /* Navigation links shared style */
@@ -401,17 +418,12 @@ body {
      * It becomes a vertical dropdown below the header when .nav--open is added.
      */
     .nav {
-        /* display: none hides the nav completely until JS adds .nav--open */
         display: none;
         flex-direction: column;
         align-items: flex-start;
         gap: var(--spacing-md);
-        /*
-         * The nav needs to appear below the header-inner as a full-width block.
-         * We use position: absolute so it overlays the page content.
-         */
         position: absolute;
-        top: 100%; /* Directly below the header */
+        top: 100%;
         left: 0;
         right: 0;
         background-color: var(--color-white);
@@ -421,15 +433,18 @@ body {
         z-index: 99;
     }
 
-    /*
-     * .nav--open is toggled by main.js when the hamburger is clicked.
-     * It changes display to flex to show the mobile menu.
-     */
     .nav--open {
         display: flex;
     }
 
-    /* The header needs position: relative so the nav's position: absolute works */
+    .nav-center,
+    .nav-right {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+        width: 100%;
+    }
+
     .header-inner {
         position: relative;
     }

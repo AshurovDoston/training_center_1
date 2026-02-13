@@ -5,51 +5,47 @@
 
 {% block content %}
 
-<section class="hero--large">
-    {% if user.is_authenticated %}
-        <h1 class="hero-title">Welcome back, {{ user.username }}!</h1>
-    {% else %}
-        <h1 class="hero-title">Learn Without Limits</h1>
-    {% endif %}
-    <p class="hero-subtitle">
-        Structured courses, self-paced learning, zero pressure.
-        Start building your skills today.
-    </p>
-    <div class="hero-actions">
-        <a href="{% url 'course_list' %}" class="btn btn-primary btn--lg">Browse Courses</a>
-        {% if not user.is_authenticated %}
-            <a href="{% url 'signup' %}" class="btn btn-secondary btn--lg">Sign Up Free</a>
+<section class="hero">
+    <div class="hero-content">
+        {% if user.is_authenticated %}
+            <h1 class="hero-title">Welcome back, {{ user.username }}!</h1>
+        {% else %}
+            <h1 class="hero-title">Learn Without Limits</h1>
         {% endif %}
+        <p class="hero-subtitle">
+            Structured courses, self-paced learning, zero pressure.
+            Start building your skills today.
+        </p>
+        <div class="hero-actions">
+            <a href="{% url 'course_list' %}" class="btn btn-primary btn--lg">Browse Courses</a>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'signup' %}" class="btn btn-secondary btn--lg">Sign Up Free</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="hero-image">
+        <div class="hero-image-placeholder"></div>
     </div>
 </section>
 
 {% if featured_courses %}
-<section class="section-home" id="featured-courses">
-    <h2 class="section-home-title">Featured Courses</h2>
-    <p class="section-home-subtitle">Start with one of our most popular courses.</p>
+<section class="section-home" id="popular-courses">
+    <h2 class="section-home-title">Popular Courses</h2>
 
-    <div class="course-grid">
+    <div class="course-grid course-grid--home">
         {% for course in featured_courses %}
-        <article class="course-card">
+        <a href="{% url 'course_detail' course.slug %}" class="course-card course-card--minimal">
             <div class="course-card-body">
-                <h3 class="course-card-title">
-                    <a href="{% url 'course_detail' course.slug %}">{{ course.title }}</a>
-                </h3>
+                <h3 class="course-card-title">{{ course.title }}</h3>
                 <p class="course-card-description">
-                    {{ course.description|truncatewords:15|default:"No description available." }}
-                </p>
-                <p class="course-card-instructor">
-                    <strong>Instructor:</strong> {{ course.instructor }}
+                    {{ course.description|truncatewords:12|default:"No description available." }}
                 </p>
                 <div class="course-stats">
                     <span class="stat-item"><strong>{{ course.modules_count }}</strong> Modules</span>
                     <span class="stat-item"><strong>{{ course.lessons_count }}</strong> Lessons</span>
                 </div>
             </div>
-            <div class="course-card-footer">
-                <a href="{% url 'course_detail' course.slug %}" class="btn btn-primary">View Course</a>
-            </div>
-        </article>
+        </a>
         {% endfor %}
     </div>
 
@@ -58,47 +54,5 @@
     </div>
 </section>
 {% endif %}
-
-<section class="section-home">
-    <h2 class="section-home-title">Why Gamzan?</h2>
-    <p class="section-home-subtitle">A simple, focused way to learn new skills.</p>
-
-    <div class="features-grid">
-        <div class="feature-card">
-            <div class="feature-icon" aria-hidden="true">&#9201;</div>
-            <h3 class="feature-title">Self-Paced</h3>
-            <p class="feature-text">
-                Learn on your schedule. No deadlines, no rush.
-                Come back whenever you're ready.
-            </p>
-        </div>
-
-        <div class="feature-card">
-            <div class="feature-icon" aria-hidden="true">&#128218;</div>
-            <h3 class="feature-title">Structured Lessons</h3>
-            <p class="feature-text">
-                Courses are organized into modules and lessons.
-                Follow a clear path from start to finish.
-            </p>
-        </div>
-
-        <div class="feature-card">
-            <div class="feature-icon" aria-hidden="true">&#9989;</div>
-            <h3 class="feature-title">Track Progress</h3>
-            <p class="feature-text">
-                See how far you've come. Pick up right
-                where you left off.
-            </p>
-        </div>
-    </div>
-</section>
-
-<section class="cta-section--prominent">
-    <h2 class="cta-title">Ready to Start Learning?</h2>
-    <p class="cta-text">
-        Join Gamzan today and begin your learning journey.
-    </p>
-    <a href="{% url 'course_list' %}" class="btn btn-primary btn--lg">Explore Courses</a>
-</section>
 
 {% endblock %}

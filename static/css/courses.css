@@ -3,67 +3,57 @@
    ========================================================================== */
 
 /* ==========================================================================
-   Hero Section — Large gradient banner for the home page
+   Hero Section — Split layout for the home page
    ========================================================================== */
 
-/*
- * .hero--large creates an eye-catching hero section with a gradient background.
- *
- * CSS CONCEPT: linear-gradient()
- * Creates a smooth color transition between two (or more) colors.
- * The first value (135deg) is the angle — 135deg goes from top-left to bottom-right.
- * The colors blend from --color-primary (blue) to a slightly different blue (#1e40af).
- *
- * Why negative margins? The .main container has horizontal padding. We use negative
- * margins to make the hero stretch full-width, then add padding back inside.
- */
-.hero--large {
-    background: linear-gradient(135deg, var(--color-primary), #6f7fba);
-    color: var(--color-white);
-    text-align: center;
-    padding: var(--spacing-3xl) var(--spacing-xl);
-    margin: calc(-1 * var(--spacing-xl)) calc(-1 * var(--spacing-md)) var(--spacing-2xl);
-    border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+.hero {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3xl);
+    padding: var(--spacing-3xl) 0;
+    margin-bottom: var(--spacing-2xl);
 }
 
-/* Hero title — large white text */
-.hero--large .hero-title {
+.hero-content {
+    flex: 1;
+}
+
+.hero-title {
     font-size: var(--font-size-3xl);
     font-weight: 700;
-    color: var(--color-white);
+    color: var(--color-text);
     margin: 0 0 var(--spacing-md) 0;
     line-height: 1.2;
 }
 
-/* Hero subtitle — slightly transparent white for visual hierarchy */
-.hero--large .hero-subtitle {
+.hero-subtitle {
     font-size: var(--font-size-lg);
-    color: rgba(255, 255, 255, 0.9); /* White with 90% opacity */
+    color: var(--color-text-muted);
     margin: 0 0 var(--spacing-xl) 0;
     line-height: 1.6;
-    max-width: 600px;
-    margin-left: auto;   /* Centers the subtitle by setting left and */
-    margin-right: auto;  /* right margins to auto (text-align centers inline content) */
-    margin-bottom: var(--spacing-xl);
+    max-width: 500px;
 }
 
-/* Container for the CTA buttons in the hero */
 .hero-actions {
     display: flex;
-    justify-content: center;
     gap: var(--spacing-md);
-    flex-wrap: wrap; /* Buttons stack on very small screens */
+    flex-wrap: wrap;
 }
 
-/* On the hero, secondary button gets a white transparent look */
-.hero--large .btn-secondary {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: var(--color-white);
-    border-color: rgba(255, 255, 255, 0.3);
+.hero-image {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.hero--large .btn-secondary:hover {
-    background-color: rgba(255, 255, 255, 0.25);
+.hero-image-placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    max-width: 480px;
+    background-color: var(--color-primary-light);
+    border-radius: var(--border-radius-xl);
+    border: 2px dashed var(--color-border);
 }
 
 /* ==========================================================================
@@ -258,6 +248,31 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: var(--spacing-lg);
+}
+
+/* Home page grid: 4 columns on desktop */
+.course-grid--home {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* Minimal card variant for home page — entire card is an <a> tag */
+.course-card--minimal {
+    text-decoration: none;
+    color: inherit;
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--color-border);
+    box-shadow: none;
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.course-card--minimal:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+}
+
+.course-card--minimal .course-card-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
 }
 
 /* ==========================================================================
@@ -1117,14 +1132,33 @@
    Responsive Adjustments — Mobile-friendly overrides
    ========================================================================== */
 
+@media (max-width: 1024px) {
+    .course-grid--home {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
-    /* Reduce hero size on mobile */
-    .hero--large {
-        padding: var(--spacing-2xl) var(--spacing-md);
+    /* Hero stacks vertically on mobile */
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--spacing-xl) 0;
+        gap: var(--spacing-xl);
     }
 
-    .hero--large .hero-title {
-        font-size: var(--font-size-2xl);
+    .hero-subtitle {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-actions {
+        justify-content: center;
+    }
+
+    .hero-image-placeholder {
+        max-width: 320px;
     }
 
     /* Detail hero responsive */
@@ -1175,6 +1209,10 @@
 }
 
 @media (max-width: 640px) {
+    .course-grid--home {
+        grid-template-columns: 1fr;
+    }
+
     /* Stack lesson navigation on mobile */
     .lesson-navigation {
         flex-direction: column;
