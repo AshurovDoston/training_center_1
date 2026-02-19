@@ -6,59 +6,55 @@
    CSS Custom Properties (Design Tokens)
    ========================================================================== */
 
-/*
- * CSS custom properties (also called "CSS variables") let you define values
- * once and reuse them everywhere. If you change a color here, it updates
- * across the entire site. They're declared inside :root (the <html> element)
- * so they're available globally.
- *
- * Usage: var(--color-primary) in any CSS rule.
- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
     /* ---- Colors ---- */
-    --color-primary: #2563eb;          /* Main brand blue — buttons, links, accents */
-    --color-primary-hover: #1d4ed8;    /* Darker blue for hover states */
-    --color-primary-light: #dbeafe;    /* Very light blue — subtle highlights, active states */
-    --color-text: #1f2937;             /* Near-black for body text */
-    --color-text-light: #374151;       /* Slightly lighter — secondary headings */
-    --color-text-muted: #6b7280;       /* Gray — captions, help text, metadata */
-    --color-bg: #f9fafb;              /* Light gray page background */
+    --color-primary: #1D4ED8;
+    --color-primary-hover: #1e3a8a;
+    --color-primary-light: #DBEAFE;
+    --color-text: #1F2937;
+    --color-text-light: #374151;
+    --color-text-muted: #6B7280;
+    --color-bg: #F3F4F6;
+    --color-bg-light: #F9FAFB;
     --color-white: #ffffff;
-    --color-border: #e5e7eb;           /* Light gray for borders and dividers */
-    --color-error: #dc2626;            /* Red — error messages, required indicators */
-    --color-success: #16a34a;          /* Green — valid form fields, success states */
+    --color-border: #E5E7EB;
+    --color-error: #dc2626;
+    --color-success: #10B981;
 
     /* ---- Typography ---- */
-    /* System font stack: uses the OS default font for fast loading and native feel */
-    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --font-size-sm: 0.875rem;   /* 14px — small text, labels, captions */
-    --font-size-base: 1rem;     /* 16px — body text */
-    --font-size-lg: 1.125rem;   /* 18px — card titles, sub-headings */
-    --font-size-xl: 1.5rem;     /* 24px — section headings */
-    --font-size-2xl: 2rem;      /* 32px — page titles */
-    --font-size-3xl: 2.5rem;    /* 40px — hero headline */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-size-sm: 0.875rem;   /* 14px */
+    --font-size-base: 1rem;     /* 16px */
+    --font-size-lg: 1.125rem;   /* 18px */
+    --font-size-xl: 1.25rem;    /* 20px */
+    --font-size-2xl: 1.75rem;   /* 28px */
+    --font-size-3xl: 2.625rem;  /* 42px */
+    --font-size-4xl: 3.5rem;    /* 56px */
 
-    /* ---- Spacing ---- */
-    /* Consistent spacing scale keeps margins and padding proportional */
-    --spacing-xs: 0.25rem;   /* 4px */
-    --spacing-sm: 0.5rem;    /* 8px */
-    --spacing-md: 1rem;      /* 16px */
-    --spacing-lg: 1.5rem;    /* 24px */
-    --spacing-xl: 2rem;      /* 32px */
-    --spacing-2xl: 3rem;     /* 48px */
-    --spacing-3xl: 4rem;     /* 64px — large sections like hero */
+    /* ---- Spacing (8px grid) ---- */
+    --spacing-xs: 0.5rem;    /* 8px */
+    --spacing-sm: 1rem;      /* 16px */
+    --spacing-md: 1.5rem;    /* 24px */
+    --spacing-lg: 2rem;      /* 32px */
+    --spacing-xl: 3rem;      /* 48px */
+    --spacing-2xl: 4rem;     /* 64px */
+    --spacing-3xl: 5rem;     /* 80px */
+    --spacing-4xl: 7.5rem;   /* 120px */
 
     /* ---- Borders & Shadows ---- */
-    --border-radius: 0.375rem;     /* 6px — default for inputs, small cards */
-    --border-radius-lg: 0.75rem;   /* 12px — larger cards, feature sections */
+    --border-radius: 0.375rem;     /* 6px */
+    --border-radius-lg: 0.5rem;    /* 8px */
+    --border-radius-xl: 0.75rem;   /* 12px */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
     /* ---- Transitions ---- */
-    /* Reusable timing for smooth animations */
     --transition-base: 0.2s ease-in-out;
+    --transition-smooth: 0.3s ease-in-out;
 }
 
 /* Reset */
@@ -72,24 +68,33 @@ body {
     margin: 0;
     font-family: var(--font-family);
     font-size: var(--font-size-base);
-    line-height: 1.5;
+    line-height: 1.6;
     color: var(--color-text);
-    background-color: var(--color-bg);
+    background-color: var(--color-white);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+    line-height: 1.2;
+    letter-spacing: 0.3px;
 }
 
 /* Typography */
 .heading-1 {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-4xl);
     font-weight: 700;
-    margin: 0 0 var(--spacing-lg) 0;
+    margin: 0 0 var(--spacing-md) 0;
     color: var(--color-text);
+    line-height: 1.2;
 }
 
 .heading-2 {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-3xl);
     font-weight: 600;
-    margin: 0 0 var(--spacing-md) 0;
+    margin: 0 0 var(--spacing-sm) 0;
     color: var(--color-text);
+    line-height: 1.2;
 }
 
 .text-muted {
@@ -104,10 +109,12 @@ body {
 .link {
     color: var(--color-primary);
     text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition-base);
 }
 
 .link:hover {
-    text-decoration: underline;
+    border-bottom-color: var(--color-primary);
 }
 
 /* Layout */
@@ -121,36 +128,36 @@ body {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 var(--spacing-md);
+    padding: 0 var(--spacing-sm);
 }
 
 /* ==========================================================================
-   Header — Site-wide top navigation bar
+   Header
    ========================================================================== */
 
 .header {
     background-color: var(--color-white);
     border-bottom: 1px solid var(--color-border);
-    padding: var(--spacing-md) 0;
-    /* sticky keeps the header visible as you scroll down */
+    padding: var(--spacing-sm) 0;
     position: sticky;
     top: 0;
-    z-index: 100; /* Ensures header stays above other content */
+    z-index: 100;
 }
 
 .header-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
 }
 
 /* Brand / Logo */
 .brand {
-    font-size: var(--font-size-xl);
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--color-primary);
     text-decoration: none;
+    transition: color var(--transition-base);
 }
 
 .brand:hover {
@@ -158,19 +165,14 @@ body {
 }
 
 /* ==========================================================================
-   Hamburger Button — Mobile menu toggle (hidden on desktop)
+   Hamburger Button
    ========================================================================== */
 
-/*
- * The hamburger button shows three horizontal lines on mobile.
- * On desktop, it's hidden with display: none.
- * When clicked, JavaScript toggles .hamburger--active to animate it.
- */
 .hamburger {
-    display: none;          /* Hidden on desktop — shown in mobile media query */
-    flex-direction: column; /* Stack the three lines vertically */
+    display: none;
+    flex-direction: column;
     justify-content: center;
-    gap: 5px;               /* Space between the three lines */
+    gap: 5px;
     width: 32px;
     height: 32px;
     background: none;
@@ -179,27 +181,15 @@ body {
     padding: 4px;
 }
 
-/* Each of the three horizontal lines in the hamburger icon */
 .hamburger-line {
     display: block;
     width: 100%;
     height: 2px;
     background-color: var(--color-text);
     border-radius: 2px;
-    /*
-     * transition makes the lines animate smoothly when
-     * the hamburger transforms into an X shape.
-     */
     transition: transform var(--transition-base), opacity var(--transition-base);
 }
 
-/*
- * .hamburger--active is added by JavaScript when the menu is open.
- * It transforms the three lines into an X (close icon):
- * - Top line rotates 45 degrees down
- * - Middle line disappears (opacity: 0)
- * - Bottom line rotates -45 degrees up
- */
 .hamburger--active .hamburger-line:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
 }
@@ -213,29 +203,44 @@ body {
 }
 
 /* ==========================================================================
-   Navigation — Links in the header
+   Navigation
    ========================================================================== */
 
 .nav {
     display: flex;
     align-items: center;
-    gap: var(--spacing-lg);
+    flex: 1;
+    justify-content: space-between;
 }
 
-/* Navigation links shared style */
+.nav-center {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    margin: 0 auto;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
 .nav-link {
-    color: var(--color-text-light);
+    color: var(--color-text);
     text-decoration: none;
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-base);
     font-weight: 500;
     transition: color var(--transition-base);
+    border: none;
+    background: none;
+    padding: 0;
 }
 
 .nav-link:hover {
     color: var(--color-primary);
 }
 
-/* Highlight the "active" nav link (current page) */
 .nav-link--active {
     color: var(--color-primary);
 }
@@ -249,7 +254,6 @@ body {
     color: var(--color-border);
 }
 
-/* User greeting in nav */
 .user-greeting {
     color: var(--color-text);
     font-size: var(--font-size-sm);
@@ -259,30 +263,89 @@ body {
 /* Main Content */
 .main {
     flex: 1;
-    padding: var(--spacing-xl) 0;
+    padding: var(--spacing-lg) 0;
 }
 
 /* ==========================================================================
-   Footer — Site-wide bottom section
+   Footer
    ========================================================================== */
 
 .footer {
-    background-color: var(--color-white);
+    background-color: var(--color-bg-light);
     border-top: 1px solid var(--color-border);
-    padding: var(--spacing-xl) 0;
-    margin-top: auto; /* Pushes footer to bottom of page via flexbox */
+    padding: var(--spacing-2xl) 0 var(--spacing-lg);
+    margin-top: auto;
 }
 
-/*
- * Footer inner uses flexbox to place content and links side by side.
- * On mobile, they stack vertically (see responsive section below).
- */
-.footer-inner {
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--spacing-md);
+}
+
+.footer-brand {
+    max-width: 250px;
+}
+
+.footer-brand-name {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 var(--spacing-xs) 0;
+}
+
+.footer-brand-tagline {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.footer-columns {
+    display: flex;
+    gap: var(--spacing-xl);
+}
+
+.footer-column {
+    min-width: 120px;
+}
+
+.footer-column-title {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 var(--spacing-sm) 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.footer-column-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.footer-column-link {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    transition: color var(--transition-base);
+}
+
+.footer-column-link:hover {
+    color: var(--color-primary);
+}
+
+.footer-bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
 }
 
 .footer-text {
@@ -291,10 +354,18 @@ body {
     margin: 0;
 }
 
-/* Footer navigation links */
+/* Legacy footer support */
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
 .footer-links {
     display: flex;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-md);
 }
 
 .footer-link {
@@ -309,36 +380,32 @@ body {
 }
 
 /* ==========================================================================
-   Buttons — Reusable button styles
+   Buttons
    ========================================================================== */
 
-/*
- * .btn is the base button class. Always pair it with a variant like
- * .btn-primary or .btn-secondary to set colors.
- */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: var(--spacing-sm) var(--spacing-md);
-    font-size: var(--font-size-sm);
-    font-weight: 500;
+    padding: 10px 30px;
+    font-size: var(--font-size-base);
+    font-weight: 600;
     line-height: 1.5;
     border-radius: var(--border-radius);
     cursor: pointer;
-    transition: background-color var(--transition-base), border-color var(--transition-base),
-                transform var(--transition-base);
+    transition: all var(--transition-smooth);
     text-decoration: none;
-    border: 1px solid transparent;
+    border: 2px solid transparent;
+    font-family: var(--font-family);
 }
 
-/* Subtle lift effect on hover for all buttons */
 .btn:hover {
-    transform: translateY(-1px);
+    transform: scale(1.02);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn:active {
-    transform: translateY(0);
+    transform: scale(0.98);
 }
 
 .btn-primary {
@@ -353,25 +420,32 @@ body {
 }
 
 .btn-secondary {
-    background-color: var(--color-white);
-    color: var(--color-text);
-    border-color: var(--color-border);
+    background-color: transparent;
+    color: var(--color-primary);
+    border-color: var(--color-primary);
 }
 
 .btn-secondary:hover {
-    background-color: var(--color-bg);
+    background-color: var(--color-primary-light);
 }
 
 .btn-sm {
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding: 6px 16px;
     font-size: var(--font-size-sm);
+    font-weight: 500;
 }
 
-/* Large button — used in hero sections and prominent CTAs */
 .btn--lg {
-    padding: var(--spacing-md) var(--spacing-xl);
+    padding: 12px 32px;
     font-size: var(--font-size-base);
-    border-radius: var(--border-radius-lg);
+    font-weight: 600;
+    border-radius: var(--border-radius);
+}
+
+/* Login link in header */
+.nav-link--login {
+    color: var(--color-primary);
+    font-weight: 500;
 }
 
 /* Logout form inline */
@@ -382,59 +456,106 @@ body {
 }
 
 /* ==========================================================================
-   Responsive — Mobile adaptations (screens 768px and below)
+   Form Inputs (Global Standards)
    ========================================================================== */
 
-/*
- * @media queries apply styles only when the screen matches the condition.
- * max-width: 768px means "apply these styles on screens 768px wide or less."
- * This is a common breakpoint for tablets and phones.
- */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="search"],
+input[type="date"],
+select,
+textarea {
+    font-family: var(--font-family);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+    outline: none;
+}
+
+/* ==========================================================================
+   Scroll Animations
+   ========================================================================== */
+
+.fade-in-section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
 @media (max-width: 768px) {
-    /* Show the hamburger button on mobile */
     .hamburger {
         display: flex;
     }
 
-    /*
-     * On mobile, the nav is hidden by default.
-     * It becomes a vertical dropdown below the header when .nav--open is added.
-     */
     .nav {
-        /* display: none hides the nav completely until JS adds .nav--open */
         display: none;
         flex-direction: column;
         align-items: flex-start;
-        gap: var(--spacing-md);
-        /*
-         * The nav needs to appear below the header-inner as a full-width block.
-         * We use position: absolute so it overlays the page content.
-         */
+        gap: var(--spacing-sm);
         position: absolute;
-        top: 100%; /* Directly below the header */
+        top: 100%;
         left: 0;
         right: 0;
         background-color: var(--color-white);
         border-bottom: 1px solid var(--color-border);
-        padding: var(--spacing-md);
+        padding: var(--spacing-sm);
         box-shadow: var(--shadow-md);
         z-index: 99;
     }
 
-    /*
-     * .nav--open is toggled by main.js when the hamburger is clicked.
-     * It changes display to flex to show the mobile menu.
-     */
     .nav--open {
         display: flex;
     }
 
-    /* The header needs position: relative so the nav's position: absolute works */
+    .nav-center,
+    .nav-right {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+        width: 100%;
+    }
+
     .header-inner {
         position: relative;
     }
 
-    /* Stack footer content on mobile */
+    /* Footer responsive */
+    .footer-top {
+        flex-direction: column;
+        gap: var(--spacing-lg);
+    }
+
+    .footer-brand {
+        max-width: 100%;
+    }
+
+    .footer-columns {
+        flex-wrap: wrap;
+        gap: var(--spacing-lg);
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-xs);
+    }
+
     .footer-inner {
         flex-direction: column;
         text-align: center;
